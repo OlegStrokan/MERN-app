@@ -1,6 +1,8 @@
 import * as mongoose from 'mongoose';
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/some-mongo', {
+export const uri = 'mongodb+srv://oleg:258120@cluster0.omnpn.mongodb.net/Cluster0?retryWrites=true&w=majority';
+
+mongoose.connect(uri, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
