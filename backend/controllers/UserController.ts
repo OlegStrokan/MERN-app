@@ -50,7 +50,6 @@ class UserController {
 
 	async delete(req: express.Request, res: express.Response): Promise<void> {
 		const user = req.body as UserModelInterface;
-
 		try {
 			if (user) {
 				const userId = req.params.id;
@@ -85,8 +84,12 @@ class UserController {
 	async update(req: express.Request, res: express.Response): Promise<void> {
 		// @ts-ignore
 		const user = req.body as UserModelInterface;
-
 		try {
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			res.status(400).json({ status: 'error', errors: errors.array() });
+			return;
+		}
 			if (user) {
 				const userId = req.params.id;
 

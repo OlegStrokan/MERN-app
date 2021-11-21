@@ -4,6 +4,7 @@ import {registerValidations} from "./validations/register";
 import * as dotenv from 'dotenv'
 import './db'
 import * as bodyParser from 'body-parser';
+import { updateValidations } from './validations/update';
 
 
 dotenv.config();
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/users', UserCtrl.index);
 app.post('/users', registerValidations, UserCtrl.create);
-app.patch('/users/:id', UserCtrl.update);
+app.patch('/users/:id', updateValidations, UserCtrl.update);
 app.delete('/users/:id', UserCtrl.delete);
 
 app.listen(8888, () => {
