@@ -11,9 +11,10 @@ export interface UserModelInterface {
 	location?: string;
 	about?: string;
 	website?: string;
+	posts?: string[];
 }
 
-type UserModelDocumentInterface = UserModelInterface & Document;
+export type UserModelDocumentInterface = UserModelInterface & Document;
 
 const UserSchema = new Schema<UserModelInterface>({
 	email: {
@@ -41,6 +42,7 @@ const UserSchema = new Schema<UserModelInterface>({
 	location: String,
 	about: String,
 	website: String,
+	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
 export const UserModel = model<UserModelDocumentInterface>('User', UserSchema);

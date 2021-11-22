@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { UserModel, UserModelInterface } from '../models/UserModel';
+import { UserModel, UserModelDocumentInterface, UserModelInterface } from '../models/UserModel';
 import {validationResult} from "express-validator";
 import {generateMD5} from "../utils/generateHash";
 import { isValidObjectId } from '../utils/isValidObjectId';
@@ -47,6 +47,49 @@ class UserController {
 			})
 		}
 	}
+	async show(req: any, res: express.Response): Promise<void> {
+		try {
+			const userId = req.params.id;
+
+			if (!isValidObjectId(userId)) {
+				res.status(400).send();
+				return;
+			}
+
+			const user = await UserModel.findById(userId).populate('posts').exec();
+
+			if (!user) {
+				res.status(404).send();
+				return;
+			}
+
+			res.json({
+				status: 'success',
+				data: user,
+			});
+		} catch (error) {
+			res.status(500).json({
+				status: 'error',
+				message: error,
+			});
+		}
+	}
+
+	async getUserInfo(req: express.Request, res: express.Response): Promise<void> {
+		try {
+			const user = req.body ? (req.body as UserModelDocumentInterface).toJSON() : undefined;
+			res.json({
+				status: 'success',
+				data: user,
+			});
+		} catch (error) {
+			res.status(500).json({
+				status: 'error',
+				message: error,
+			});
+		}
+	}
+
 
 	async delete(req: express.Request, res: express.Response): Promise<void> {
 		const user = req.body as UserModelInterface;
@@ -73,6 +116,7 @@ class UserController {
 				}
 			}
 		} catch (error) {
+			console.log(error)
 			res.status(500).json({
 				status: 'error',
 				message: error,
