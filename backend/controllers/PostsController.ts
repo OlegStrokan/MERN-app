@@ -2,16 +2,16 @@ import * as express from 'express'
 import {validationResult} from "express-validator";
 import { isValidObjectId } from '../utils/isValidObjectId';
 import { PostModel, PostModelInterface } from '../models/PostModel';
-import { UserModel, UserModelDocumentInterface, UserModelInterface } from '../models/UserModel';
+import { UserModel, UserModelInterface } from '../models/UserModel';
 class PostController {
 
 	async index(_: any, res: express.Response): Promise<void> {
 		try {
-			const tweets = await PostModel.find({}).populate('user').sort({ createdAt: '-1' }).exec();
+			const posts = await PostModel.find({}).populate('user').sort({ createdAt: '-1' }).exec();
 
 			res.json({
 				status: 'success',
-				data: tweets,
+				data: posts,
 			});
 		} catch (error) {
 			res.status(500).json({
@@ -52,13 +52,15 @@ class PostController {
 	async getUserPosts(req: any, res: express.Response): Promise<void> {
 		try {
 			const userId = req.params.id;
-
+console.log(req.params)
 			if (!isValidObjectId(userId)) {
 				res.status(400).send();
 				return;
 			}
+			console.log(userId)
 
 			const post = await PostModel.find({ user: userId }).populate('user').exec();
+			console.log(post);
 
 			if (!post) {
 				res.status(404).send();
@@ -80,7 +82,7 @@ class PostController {
 	async create(req: express.Request, res: express.Response): Promise<void> {
 		try {
 			const user = req.body.user as UserModelInterface;
-
+	console.log(user)
 			if (user?._id) {
 				const errors = validationResult(req);
 
@@ -90,18 +92,20 @@ class PostController {
 				}
 
 				const data: any = {
-					content: req.body.content,
-					user: user._id,
+					content: req.body.content
 				};
-
 
 				const post = await PostModel.create(data);
 
-				user.posts!.push(post._id);
-		
+				await post.save();
+				const userById = await UserModel.findById(user._id);
+				// @ts-ignore
+				userById.posts.push(post);
+				await userById.save();
+
 				res.json({
 					status: 'success',
-					data: await post.populate('user').execPopulate(),
+					data: userById
 				});
 
 			}
@@ -112,6 +116,12 @@ class PostController {
 			});
 		}
 	}
+
+	async userByPost(req,res): Promise<void> {
+			const { id } = req.params;
+			const userByPost = await PostModel.findById(id).populate('user');
+			res.send(userByPost);
+}
 
 
 
