@@ -6,11 +6,6 @@ export interface UserModelInterface {
 	fullname: string;
 	username: string;
 	password: string;
-	confirmHash: string;
-	confirmed?: boolean;
-	location?: string;
-	about?: string;
-	website?: string;
 	posts?: string[];
 }
 
@@ -35,13 +30,7 @@ const UserSchema = new Schema<UserModelInterface>({
 		required: true,
 		type: String,
 	},
-	confirmHash: {
-		required: true,
-		type: String,
-	},
-	location: String,
-	about: String,
-	website: String,
+	role: [{ type: String, ref: 'Role'}],
 	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
