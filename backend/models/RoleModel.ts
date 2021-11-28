@@ -11,8 +11,7 @@ const RoleSchema = new Schema<RoleModelInterface>({
 		type: String,
 		default: 'USER',
 		unique: true,
-	},
-	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+	}
 });
 
 export const RoleModel = model<RoleModelDocumentInterface>('Role', RoleSchema);

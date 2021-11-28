@@ -8,7 +8,7 @@ import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';
 import { AuthCtrl } from './controllers/AuthController';
-
+const authMiddleware = require('./middleware/authMiddleware')
 
 dotenv.config();
 const app = express();
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/registration', AuthCtrl.registration)
 app.post('/login', AuthCtrl.login)
-app.get('/users', AuthCtrl.getUsers)
+app.get('/users', authMiddleware, AuthCtrl.getUsers)
 
 // app.get('/users', UserCtrl.index);
 app.get('/users/:id', UserCtrl.show);

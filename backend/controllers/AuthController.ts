@@ -1,6 +1,16 @@
 import { RoleModel } from '../models/RoleModel';
 import { UserModel } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config')
+
+const generateAccessToken = (id, roles) => {
+    const payload  = {
+      id,
+      roles
+    }
+    return jwt.sign(payload, secret, {expiresIn: '24h'})
+}
 
 class AuthController {
   async registration(req, res) {
@@ -14,11 +24,9 @@ class AuthController {
       const hashPassword = bcrypt.hashSync(password, 7)
       const userRole = await RoleModel.findOne({ value: 'USER'})
       const user = new UserModel({ username, password: hashPassword, roles: [userRole.value], fullname, email})
-     console.log(user)
        await UserModel.create(user)
       return res.json({ message: 'Пользователь успешно зарегистрирован'})
     } catch (e) {
-      console.log(e)
       res.status(400).json({message: 'Registration error'})
     }
   }
@@ -35,6 +43,8 @@ class AuthController {
           return res.status(400).json({message: 'Введен неправильный пароль'})
 
         }
+        const token = generateAccessToken(user._id, user.roles);
+        return res.json({token})
     } catch (e) {
       console.log(e)
       res.status(400).json({message: 'Login error'})
@@ -43,12 +53,8 @@ class AuthController {
 
   async getUsers (req, res) {
     try {
-
-      const userRole = new RoleModel()
-      const adminRole = new RoleModel({value: 'ADMIN'})
-      await userRole.save()
-      await adminRole.save()
-        res.json('server work')
+      const users = await UserModel.find();
+        res.json(users)
     } catch (e) {
 
     }

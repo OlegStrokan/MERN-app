@@ -6,6 +6,7 @@ export interface UserModelInterface {
 	fullname: string;
 	username: string;
 	password: string;
+	roles: string;
 	posts?: string[];
 }
 
@@ -30,7 +31,7 @@ const UserSchema = new Schema<UserModelInterface>({
 		required: true,
 		type: String,
 	},
-	role: [{ type: String, ref: 'Role'}],
+	roles: [{ type: String, ref: 'Role'}],
 	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
