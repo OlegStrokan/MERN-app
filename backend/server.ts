@@ -20,9 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/registration', AuthCtrl.registration)
 app.post('/login', AuthCtrl.login)
-app.get('/users', authMiddleware, AuthCtrl.getUsers)
 
-// app.get('/users', UserCtrl.index);
+app.get('/users', authMiddleware, UserCtrl.index);
 app.get('/users/:id', UserCtrl.show);
 app.post('/users', registerValidations, UserCtrl.create);
 app.patch('/users/:id', updateValidations, UserCtrl.update);
