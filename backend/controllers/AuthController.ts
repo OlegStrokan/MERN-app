@@ -1,15 +1,19 @@
 import { RoleModel } from '../models/RoleModel';
-import { UserModel } from '../models/UserModel';
+import { UserModel, UserModelInterface } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
+import * as express from 'express';
+import { isValidObjectId } from '../utils/isValidObjectId';
+import { validationResult } from 'express-validator';
+
 const jwt = require('jsonwebtoken');
 const { secret } = require('../config')
 
 const generateAccessToken = (id, roles) => {
-    const payload  = {
-      id,
-      roles
-    }
-    return jwt.sign(payload, secret, {expiresIn: '24h'})
+  const payload = {
+    id,
+    roles
+  }
+  return jwt.sign(payload, secret, { expiresIn: '24h' })
 }
 
 class AuthController {
@@ -50,6 +54,66 @@ class AuthController {
       res.status(400).json({ message: 'Login error' })
     }
   }
+
+  async logout(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      res.cookie('Authorization', '');
+      res.status(200).json({
+        status: 'success',
+        message: 'Logout success'
+      });
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({
+        status: 'error',
+        message: error,
+      });
+    }
+
+  }
+
+  async update(req: express.Request, res: express.Response): Promise<void> {
+    // @ts-ignore
+    const user = req.body as UserModelInterface;
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        res.status(400).json({ status: 'error', errors: errors.array() });
+        return;
+      }
+      if (user) {
+        const userId = req.params.id;
+
+        if (!isValidObjectId(userId)) {
+          res.status(400).send();
+          return;
+        }
+
+        const currentUser = await UserModel.findById(userId);
+
+        if (user) {
+          if (String(currentUser._id) === String(userId)) {
+            currentUser.email = req.body.email;
+            currentUser.fullname = req.body.fullname;
+            currentUser.username = req.body.username;
+            currentUser.save();
+            res.send();
+          } else {
+            res.status(403).send();
+          }
+        } else {
+          res.status(404).send();
+        }
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error,
+      });
+    }
+  }
+
+
 }
 
 

@@ -1,6 +1,5 @@
 import * as express from 'express'
 import {UserCtrl} from "./controllers/UserController";
-import {registerValidations} from "./validations/register";
 import * as dotenv from 'dotenv'
 import './db'
 import * as bodyParser from 'body-parser';
@@ -18,14 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.post('/registration', AuthCtrl.registration)
-app.post('/login', AuthCtrl.login)
+app.post('/auth/registration', AuthCtrl.registration)
+app.post('/auth/login', AuthCtrl.login)
+app.patch('/auth/update', updateValidations, AuthCtrl.update);
+app.delete('/auth/logout', AuthCtrl.logout);
+
 
 app.get('/users', authMiddleware, UserCtrl.index);
-app.get('/users/:id', UserCtrl.show);
-app.post('/users', registerValidations, UserCtrl.create);
-app.patch('/users/:id', updateValidations, UserCtrl.update);
-app.delete('/users/:id', UserCtrl.delete);
+app.get('/users/:id', authMiddleware, UserCtrl.show);
 
 app.get('/posts', PostCtrl.index);
 app.get('/posts/:id', PostCtrl.show);
