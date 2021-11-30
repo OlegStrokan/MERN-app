@@ -18,6 +18,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
 import { validationSchema } from '../../utils/validators/signUp';
+import { auth } from '../../mobx/auth';
 
 interface SignUpInterface {
   onModelChange: () => void;
@@ -25,7 +26,7 @@ interface SignUpInterface {
 
 export const SignUp:React.FC<SignUpInterface> = ({ onModelChange }) => {
   const onSubmit = (event: any) => {
-    console.log(event);
+    auth.registration({email: event.email, username: event.username, fullname: event.fullname, password: event.password})
   };
 
   const {
@@ -33,10 +34,6 @@ export const SignUp:React.FC<SignUpInterface> = ({ onModelChange }) => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-
-  const [country, setCountry] = React.useState('');
-
-  const handleCountryChange = (event: SelectChangeEvent) => setCountry(event.target.value);
 
   return (
     <Box

@@ -19,12 +19,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)
-app.patch('/auth/update', updateValidations, AuthCtrl.update);
 app.delete('/auth/logout', AuthCtrl.logout);
+
+app.patch('/profile/:id', updateValidations, AuthCtrl.update);
+app.get('/profile/:id', authMiddleware, UserCtrl.show);
 
 
 app.get('/users', authMiddleware, UserCtrl.index);
-app.get('/users/:id', authMiddleware, UserCtrl.show);
+
 
 app.get('/posts', PostCtrl.index);
 app.get('/posts/:id', PostCtrl.show);
