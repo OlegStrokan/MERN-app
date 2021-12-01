@@ -7,7 +7,8 @@ import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';
 import { AuthCtrl } from './controllers/AuthController';
-const authMiddleware = require('./middleware/authMiddleware')
+const authMiddleware = require('./middleware/authMiddleware');
+const cors = require('cors');
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,20 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const corsOpts = {
+	origin: '*',
+
+	methods: [
+		'GET',
+		'POST',
+	],
+
+	allowedHeaders: [
+		'Content-Type',
+	],
+};
+
+app.use(cors(corsOpts));
 
 app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)

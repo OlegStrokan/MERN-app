@@ -13,14 +13,15 @@
     "@types/mongoose": "^5.7.36",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
     "nodemon": "^2.0.14",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3",
-    "jsonwebtoken": "^8.5.1"
+    "typescript": "^4.0.3"
   },
   "author": "",
   "license": "ISC",
