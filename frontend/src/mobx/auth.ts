@@ -13,17 +13,14 @@ class Auth {
   }
 
   registration = async({ email, username, fullname, password }: RegisterDto) => {
-    const data = await authAPI.registration({ email, username, fullname, password })
-    runInAction(() => {
-      this.username = data.username;
-      this.fullname = data.fullname;
-      this.email = data.email;
-    });
+    await authAPI.registration({ email, username, fullname, password })
   };
   login = async({ username, password }: LoginDto) => {
     const data = await authAPI.login({ username, password })
     runInAction(() => {
       this.username = data.username;
+      this.fullname = data.fullname;
+      this.email = data.email;
       this.isAuth = true;
     })
 

@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
 import { validationSchema } from '../../utils/validators/signIn';
 import { Button } from '@mui/material';
+import { auth } from '../../mobx/auth';
 
 interface SignInInterface {
   onModelChange: () => void;
@@ -23,7 +24,9 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
   });
 
   const onSubmit = (event: any) => {
-    console.log(event);
+    debugger;
+    auth.login({ username: event.username, password: event.password})
+
   };
 
   return (

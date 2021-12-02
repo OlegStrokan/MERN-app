@@ -19,15 +19,18 @@ const generateAccessToken = (id, roles) => {
 class AuthController {
   async registration(req, res) {
     try {
-      const { username, password, email, fullname } = req.body
+      const { username, password, email, fullname } = req.body.data
       const candidate = await UserModel.findOne({ username })
       if (candidate) {
         return res.status(400).json('Пользователь с таким именем уже существует')
       }
-
+      console.log(password);
       const hashPassword = bcrypt.hashSync(password, 7)
+      console.log(hashPassword)
       const userRole = await RoleModel.findOne({ value: 'USER' })
+      console.log(userRole)
       const user = new UserModel({ username, password: hashPassword, roles: [userRole.value], fullname, email })
+      console.log(user)
       await UserModel.create(user)
       return res.json({ message: 'Пользователь успешно зарегистрирован' })
     } catch (e) {
@@ -37,7 +40,7 @@ class AuthController {
 
   async login(req, res) {
     try {
-      const { username, password } = req.body;
+      const { username, password } = req.body.data;
       const user = await UserModel.findOne({ username })
       if (!user) {
         return res.status(400).json({ message: 'Пользователь ' + username + 'не найден' })
