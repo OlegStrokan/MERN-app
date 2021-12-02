@@ -4,9 +4,15 @@ import styles from './Login.module.css';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
 import { observer } from 'mobx-react-lite';
+import { auth } from '../../mobx/auth';
+import { Navigate } from 'react-router-dom';
 
-export const Login = observer(() => {
+export const Login:React.FC = observer(() => {
   const [register, setRegister] = React.useState<boolean>(true);
+
+  if  (auth.isAuth) {
+    return <Navigate to="/posts"/>;
+  }
 
   const onModelChange = () => {
     setRegister(!register);
