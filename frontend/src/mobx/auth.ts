@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { LoginDto, LogoutDto, RegisterDto } from '../types/login.dto';
 import { authAPI } from '../api/auth-api';
+import { saveToLS } from '../utils/localStorage/setToLS';
 
 class Auth {
   isAuth = false;
@@ -18,10 +19,8 @@ class Auth {
   login = async({ username, password }: LoginDto) => {
     const data = await authAPI.login({ username, password })
     runInAction(() => {
-      this.username = data.username;
-      this.fullname = data.fullname;
-      this.email = data.email;
       this.isAuth = true;
+      saveToLS('token', data.token, 'token')
     })
 
   };
