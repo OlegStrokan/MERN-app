@@ -24,9 +24,7 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
   });
 
   const onSubmit = (event: any) => {
-    debugger;
-    auth.login({ username: event.username, password: event.password})
-
+    auth.login({ username: event.username, password: event.password })
   };
 
   return (

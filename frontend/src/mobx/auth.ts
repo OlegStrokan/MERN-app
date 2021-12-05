@@ -1,13 +1,19 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { LoginDto, LogoutDto, RegisterDto } from '../types/login.dto';
+import { LoginDto, RegisterDto, UserDto } from '../types/login.dto';
 import { authAPI } from '../api/auth-api';
 import { saveToLS } from '../utils/localStorage/setToLS';
 
 class Auth {
   isAuth = false;
-  username = null as null | string;
-  fullname = null as null | string;
-  email = null as null | string;
+  user: UserDto = {
+    _id: null,
+    username: null,
+    password: null,
+    email: null,
+    fullname: null,
+    posts: null,
+    roles: null,
+  }
 
   constructor() {
     makeAutoObservable(this)
@@ -17,15 +23,20 @@ class Auth {
     await authAPI.registration({ email, username, fullname, password })
   };
   login = async({ username, password }: LoginDto) => {
-    const data = await authAPI.login({ username, password })
+    const response = await authAPI.login({ username, password })
     runInAction(() => {
       this.isAuth = true;
-      saveToLS('token', data.token, 'token')
+      this.user.username = response.user.username;
+      this.user.fullname = response.user.fullname;
+      this.user.email = response.user.email;
+      this.user.posts = response.user.posts;
+      this.user.roles = response.user.roles;
+      saveToLS('token', response.token, 'token')
     })
 
   };
-  logout = async({ _id }: LogoutDto) => {
-    const data = await authAPI.logout({ _id })
+  logout = async( _id: string | null ) => {
+    saveToLS('token', '', 'token')
     runInAction(() => {
       this.isAuth = false
     })

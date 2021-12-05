@@ -20,18 +20,16 @@ class AuthController {
   async registration(req, res) {
     try {
       const { username, password, email, fullname } = req.body.data
+
       const candidate = await UserModel.findOne({ username })
       if (candidate) {
         return res.status(400).json('Пользователь с таким именем уже существует')
       }
-      console.log(password);
       const hashPassword = bcrypt.hashSync(password, 7)
-      console.log(hashPassword)
       const userRole = await RoleModel.findOne({ value: 'USER' })
-      console.log(userRole)
       const user = new UserModel({ username, password: hashPassword, roles: [userRole.value], fullname, email })
-      console.log(user)
       await UserModel.create(user)
+      console.log(user)
       return res.json({ message: 'Пользователь успешно зарегистрирован' })
     } catch (e) {
       res.status(400).json({ message: 'Registration error' })
@@ -50,8 +48,9 @@ class AuthController {
         return res.status(400).json({ message: 'Введен неправильный пароль' })
 
       }
+      console.log(user)
       const token = generateAccessToken(user._id, user.roles);
-      return res.json({ token })
+      return res.json({ token, user })
     } catch (e) {
       console.log(e)
       res.status(400).json({ message: 'Login error' })
@@ -60,7 +59,7 @@ class AuthController {
 
   async logout(req: express.Request, res: express.Response): Promise<void> {
     try {
-      res.cookie('Authorization', '');
+      res.cookie('token', '');
       res.status(200).json({
         status: 'success',
         message: 'Logout success'

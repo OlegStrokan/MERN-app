@@ -38,7 +38,7 @@ app.patch('/posts/:id', postValidation, PostCtrl.update);
 
 
 
-app.listen(8888, () => {
+app.listen(8000, () => {
 	console.log('Server run!')
 })
 

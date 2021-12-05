@@ -11,7 +11,7 @@ export const Login:React.FC = observer(() => {
   const [register, setRegister] = React.useState<boolean>(true);
 
   if  (auth.isAuth) {
-    return <Navigate to="/posts"/>;
+    return <Navigate to="/profile"/>;
   }
 
   const onModelChange = () => {
