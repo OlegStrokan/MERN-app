@@ -4,7 +4,7 @@ import { auth } from '../../mobx/auth';
 import { Navigate } from 'react-router-dom';
 import { getFromLS } from '../../utils/localStorage/getFromLS';
 
-export const Profile = () => {
+export const Posts = () => {
   React.useEffect(() => {
 
   }, [auth.isAuth])
@@ -16,7 +16,7 @@ export const Profile = () => {
 
   return (
     <Card>
-    This is profile
+    This is posts
       <Typography variant="h6">{auth.user.username}</Typography>
       <Button variant="outlined" onClick={() => window.location.reload()}>Logout</Button>
     </Card>

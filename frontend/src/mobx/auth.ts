@@ -31,12 +31,11 @@ class Auth {
       this.user.email = response.user.email;
       this.user.posts = response.user.posts;
       this.user.roles = response.user.roles;
-      saveToLS('token', response.token, 'token')
+      localStorage.setItem('token', JSON.stringify(response.token));
     })
 
   };
   logout = async( _id: string | null ) => {
-    saveToLS('token', '', 'token')
     runInAction(() => {
       this.isAuth = false
     })
