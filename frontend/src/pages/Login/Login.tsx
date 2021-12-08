@@ -20,7 +20,7 @@ export const Login:React.FC = observer(() => {
 
   return (
     <Card className={styles.root}>
-      {register ? <SignUp onModelChange={onModelChange} /> : <SignIn onModelChange={onModelChange} />}
+      {!register ? <SignUp onModelChange={onModelChange} /> : <SignIn onModelChange={onModelChange} />}
     </Card>
   );
 })

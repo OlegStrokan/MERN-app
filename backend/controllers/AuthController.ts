@@ -75,8 +75,7 @@ class AuthController {
   }
 
   async update(req: express.Request, res: express.Response): Promise<void> {
-    // @ts-ignore
-    const user = req.body as UserModelInterface;
+    const user = req.body.data as UserModelInterface;
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {

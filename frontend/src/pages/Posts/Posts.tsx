@@ -16,9 +16,11 @@ export const Posts = () => {
 
   return (
     <Card>
-    This is posts
-      <Typography variant="h6">{auth.user.username}</Typography>
-      <Button variant="outlined" onClick={() => window.location.reload()}>Logout</Button>
+      {auth.user.posts?.length === 0
+        ? <Typography variant="h6">This user don't have any posts</Typography>
+        : <Typography variant="h6">{auth.user.username}'s posts</Typography>
+      }
+
     </Card>
   );
 };

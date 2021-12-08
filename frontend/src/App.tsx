@@ -3,6 +3,7 @@ import { Login } from './pages/Login/Login';
 import { Profile } from './pages/Profile/Profile';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { Posts } from './pages/Posts/Posts';
+import { Header } from './components/Header/Header';
 
 export const App = () => {
 React.useEffect(() => {
@@ -10,6 +11,7 @@ React.useEffect(() => {
 })
   return (
     <div>
+      <Header/>
       <nav className="Nav">
         <ul>
           <li>
