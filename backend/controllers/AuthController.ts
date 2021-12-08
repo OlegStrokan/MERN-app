@@ -29,7 +29,6 @@ class AuthController {
       const userRole = await RoleModel.findOne({ value: 'USER' })
       const user = new UserModel({ username, password: hashPassword, roles: [userRole.value], fullname, email })
       await UserModel.create(user)
-      console.log(user)
       return res.json({ message: 'Пользователь успешно зарегистрирован' })
     } catch (e) {
       res.status(400).json({ message: 'Registration error' })
@@ -48,11 +47,9 @@ class AuthController {
         return res.status(400).json({ message: 'Введен неправильный пароль' })
 
       }
-      console.log(user)
       const token = generateAccessToken(user._id, user.roles);
       return res.json({ token, user })
     } catch (e) {
-      console.log(e)
       res.status(400).json({ message: 'Login error' })
     }
   }
@@ -65,7 +62,6 @@ class AuthController {
         message: 'Logout success'
       });
     } catch (error) {
-      console.log(error)
       res.status(500).json({
         status: 'error',
         message: error,
@@ -75,16 +71,14 @@ class AuthController {
   }
 
   async update(req: express.Request, res: express.Response): Promise<void> {
-    const user = req.body.data as UserModelInterface;
+    const userId = req.body._id;
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
         res.status(400).json({ status: 'error', errors: errors.array() });
         return;
       }
-      if (user) {
-        const userId = req.params.id;
-
+      if (userId) {
         if (!isValidObjectId(userId)) {
           res.status(400).send();
           return;
@@ -92,13 +86,16 @@ class AuthController {
 
         const currentUser = await UserModel.findById(userId);
 
-        if (user) {
+        if (userId) {
           if (String(currentUser._id) === String(userId)) {
             currentUser.email = req.body.email;
             currentUser.fullname = req.body.fullname;
             currentUser.username = req.body.username;
             currentUser.save();
-            res.send();
+            res.status(200).json({
+              data: currentUser,
+              message: 'success'
+            })
           } else {
             res.status(403).send();
           }

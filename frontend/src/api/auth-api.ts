@@ -8,7 +8,7 @@ export const authAPI = {
   login(data: LoginDto): Promise<LoginResponseDto> {
     return instance.post<LoginResponseDto>('auth/login', {data}).then((response) => response.data)
   },
-  updateProfile(data: UserDto): Promise<UserDto> {
-    return instance.patch<UserDto>('profile/update', {data}).then((response) => response.data)
+  updateProfile(fullname: string, username: string, email: string, _id: string): Promise<UserDto> {
+    return instance.patch<UserDto>('profile', {fullname, username, email, _id}).then((response) => response.data)
   }
 }

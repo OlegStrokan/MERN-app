@@ -20,7 +20,7 @@ app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)
 app.delete('/auth/logout', AuthCtrl.logout);
 
-app.patch('/profile/:id', updateValidations, AuthCtrl.update);
+app.patch('/profile', updateValidations, AuthCtrl.update);
 app.get('/profile/:id', authMiddleware, UserCtrl.show);
 
 

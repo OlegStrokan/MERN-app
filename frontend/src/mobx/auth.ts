@@ -26,6 +26,7 @@ class Auth {
     const response = await authAPI.login({ username, password })
     runInAction(() => {
       this.isAuth = true;
+      this.user._id = response.user._id;
       this.user.username = response.user.username;
       this.user.fullname = response.user.fullname;
       this.user.email = response.user.email;
@@ -38,6 +39,14 @@ class Auth {
   logout = async( _id: string | null ) => {
     runInAction(() => {
       this.isAuth = false
+    })
+  }
+  updateProfile = async (fullname: string, email: string, username: string, _id: string) => {
+    const response = await authAPI.updateProfile(fullname, email, username, _id)
+    runInAction(() => {
+      this.user.username = response.username;
+      this.user.fullname = response.fullname;
+      this.user.email = response.email;
     })
   }
 }

@@ -1,13 +1,14 @@
 import React from 'react';
 import { Button, Card, TextField, Typography } from '@mui/material';
 import { auth } from '../../mobx/auth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from '../../utils/validators/updateProfile';
 import styles from './Profile.module.css'
+import { UserDto } from '../../types/login.dto';
 
 export const Profile = () => {
 
@@ -28,7 +29,7 @@ export const Profile = () => {
   }
 
   const onSubmit = (event: any) => {
-
+    auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string)
   }
   return (
     <Card sx={{ p: 2 }}>

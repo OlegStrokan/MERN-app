@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Card, Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 import { auth } from '../../mobx/auth';
 import { Navigate } from 'react-router-dom';
-import { getFromLS } from '../../utils/localStorage/getFromLS';
 
 export const Posts = () => {
   React.useEffect(() => {
