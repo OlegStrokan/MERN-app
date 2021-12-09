@@ -17,4 +17,6 @@ export type UserDto = {
 export type LoginResponseDto = {
   token: string;
   user: UserDto;
+  message?: string;
+  resultCode?: number
 }

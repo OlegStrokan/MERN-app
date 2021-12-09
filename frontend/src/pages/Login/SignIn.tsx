@@ -72,6 +72,7 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
               {errors.password?.message}
             </Typography>
           </Grid>
+          {auth.error && <Grid item xs={12}><Typography variant="h6" color="error">{auth.error}</Typography></Grid>}
           <Grid item xs={12}>
           <Button
             type="submit"

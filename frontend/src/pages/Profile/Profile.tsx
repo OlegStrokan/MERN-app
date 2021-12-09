@@ -22,14 +22,14 @@ export const Profile = () => {
 
   React.useEffect(() => {
 
-  }, [auth.isAuth])
+  }, [auth.isAuth, auth.user])
 
   if (!auth.isAuth) {
     return <Navigate to="/login"/>;
   }
 
   const onSubmit = (event: any) => {
-    auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string)
+    auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string).then(() => setEditMode(false))
   }
   return (
     <Card sx={{ p: 2 }}>

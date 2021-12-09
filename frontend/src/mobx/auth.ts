@@ -13,7 +13,8 @@ class Auth {
     fullname: null,
     posts: null,
     roles: null,
-  }
+  };
+  error: any = null;
 
   constructor() {
     makeAutoObservable(this)
@@ -25,14 +26,18 @@ class Auth {
   login = async({ username, password }: LoginDto) => {
     const response = await authAPI.login({ username, password })
     runInAction(() => {
-      this.isAuth = true;
-      this.user._id = response.user._id;
-      this.user.username = response.user.username;
-      this.user.fullname = response.user.fullname;
-      this.user.email = response.user.email;
-      this.user.posts = response.user.posts;
-      this.user.roles = response.user.roles;
-      localStorage.setItem('token', JSON.stringify(response.token));
+      if (response.resultCode == 1) {
+        this.error = response.message
+      } else {
+        this.isAuth = true;
+        this.user._id = response.user._id;
+        this.user.username = response.user.username;
+        this.user.fullname = response.user.fullname;
+        this.user.email = response.user.email;
+        this.user.posts = response.user.posts;
+        this.user.roles = response.user.roles;
+        localStorage.setItem('token', JSON.stringify(response.token));
+      }
     })
 
   };
