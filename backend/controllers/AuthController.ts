@@ -1,41 +1,32 @@
-import { RoleModel } from '../models/RoleModel';
-import { UserModel, UserModelInterface } from '../models/UserModel';
+import { UserModel } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
 import * as express from 'express';
 import { isValidObjectId } from '../utils/isValidObjectId';
 import { validationResult } from 'express-validator';
+import { generateAccessToken } from '../utils/geterateAccessToken';
+import { authService } from '../services/AuthService';
 
-const jwt = require('jsonwebtoken');
-const { secret } = require('../config')
 
-const generateAccessToken = (id, roles) => {
-  const payload = {
-    id,
-    roles
-  }
-  return jwt.sign(payload, secret, { expiresIn: '24h' })
-}
 
 class AuthController {
-  async registration(req, res) {
+  async registration(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const { username, password, email, fullname } = req.body.data
+      const userData = await authService.registration(username, password, email, fullname);
+      // вписываем куку - истекает за 30 дней, httpOnly - нельзя увидеть и изменить с браузера
+      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24* 60 * 60 * 1000, httpOnly: true})
 
-      const candidate = await UserModel.findOne({ username })
-      if (candidate) {
-        return res.status(400).json('Пользователь с таким именем уже существует')
-      }
-      const hashPassword = bcrypt.hashSync(password, 7)
-      const userRole = await RoleModel.findOne({ value: 'USER' })
-      const user = new UserModel({ username, password: hashPassword, roles: [userRole.value], fullname, email })
-      await UserModel.create(user)
-      return res.json({ message: 'Пользователь успешно зарегистрирован' })
+      return res.json({
+        message: 'Регистрация прошла успешно',
+        data: userData,
+      })
+
     } catch (e) {
       res.status(400).json({ message: 'Registration error' })
     }
   }
 
-  async login(req, res) {
+  async login(req: express.Request, res: express.Response) {
     try {
       const { username, password } = req.body.data;
       const user = await UserModel.findOne({ username })
@@ -53,7 +44,6 @@ class AuthController {
       res.status(400).json({ message: 'Login error' })
     }
   }
-
   async logout(req: express.Request, res: express.Response): Promise<void> {
     try {
       res.cookie('token', '');
@@ -68,6 +58,20 @@ class AuthController {
       });
     }
 
+  }
+  async activate   (req: express.Request, res: express.Response): Promise<void> {
+    try {
+
+    } catch (error) {
+
+    }
+  }
+  async refresh(req: express.Request, res: express.Response): Promise<void> {
+    try {
+
+    } catch (error) {
+
+    }
   }
 
   async update(req: express.Request, res: express.Response): Promise<void> {
@@ -110,7 +114,6 @@ class AuthController {
       });
     }
   }
-
 
 }
 

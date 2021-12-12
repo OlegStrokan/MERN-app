@@ -117,7 +117,7 @@ console.log(req.params)
 		}
 	}
 
-	async userByPost(req,res): Promise<void> {
+	async userByPost(req: express.Request, res: express.Response): Promise<void> {
 			const { id } = req.params;
 			const userByPost = await PostModel.findById(id).populate('user');
 			res.send(userByPost);

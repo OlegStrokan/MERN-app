@@ -31,6 +31,7 @@ export const Profile = () => {
   const onSubmit = (event: any) => {
     auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string).then(() => setEditMode(false))
   }
+
   return (
     <Card sx={{ p: 2 }}>
       {!editMode
