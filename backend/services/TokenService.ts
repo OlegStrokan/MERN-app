@@ -3,7 +3,7 @@ import { TokenModel } from '../models/TokenModel';
 const jwt = require('jsonwebtoken');
 
 class TokenService {
-    generateTokens(payload) {
+    generateTokens(payload: any) {
       const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, { expiresIn: '30m'});
       const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN, { expiresIn: '30d'});
       return {
@@ -11,7 +11,7 @@ class TokenService {
           refreshToken
       }
 }
-    async saveToken(userId, refreshToken) {
+    async saveToken(userId: string, refreshToken: string) {
         const tokenData = await TokenModel.findOne({user: userId})
         if (tokenData) {
             tokenData.refreshToken = refreshToken;

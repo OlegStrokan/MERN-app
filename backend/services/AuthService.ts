@@ -1,10 +1,10 @@
 import { UserModel } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
 import { RoleModel } from '../models/RoleModel';
-import { uuid } from 'uuid';
+import uuid from 'uuid';
 import { mailService } from './MailService';
 import { tokenService } from './TokenService';
-const UserDto = require('dtos/user.dto');
+const UserDto = require('../dtos/user.dto');
 
 class AuthService {
   async registration(username: string, password: string, email: string, fullname: string) {

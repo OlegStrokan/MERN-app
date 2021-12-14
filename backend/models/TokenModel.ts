@@ -3,7 +3,7 @@ import { UserModelInterface } from './UserModel';
 
 
 export interface TokenModelInterface {
-  user: UserModelInterface,
+  user: string,
   refreshToken: string,
 }
 

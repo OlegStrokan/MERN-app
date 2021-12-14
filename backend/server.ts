@@ -1,8 +1,8 @@
-import express from 'express'
+import express from 'express';
 import {UserCtrl} from "./controllers/UserController";
-import dotenv from 'dotenv'
+import * as dotenv from 'dotenv'
 import './db'
-import bodyParser from 'body-parser';
+import * as bodyParser from 'body-parser';
 import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';

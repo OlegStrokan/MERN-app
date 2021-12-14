@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 export const uri = 'mongodb+srv://oleg:258120@cluster0.omnpn.mongodb.net/Cluster0?retryWrites=true&w=majority';
 
