@@ -14,8 +14,10 @@ class AuthService {
     }
     const hashPassword = bcrypt.hashSync(password, 7)
     const userRole = await RoleModel.findOne({ value: 'USER' })
+    console.log(userRole)
     // ссылка для активации аккаунта
     const activationLink = uuid.v4();
+    console.log(activationLink)
     const user = await UserModel.create({
       username,
       password: hashPassword,
@@ -24,8 +26,9 @@ class AuthService {
       email,
       activationLink
     })
+    console.log(user);
     // посылаем ссылку активации на email
-    await mailService.sendActivationMain(email,activationLink);
+    await mailService.sendActivationMain(email,`${process.env.API_URL}/api/activate/${activationLink}`);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
     // сохраняем refreshToken в базу данных

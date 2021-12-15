@@ -11,7 +11,7 @@ import { authService } from '../services/AuthService';
 class AuthController {
   async registration(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-      const { username, password, email, fullname } = req.body.data
+      const { username, password, email, fullname } = req.body
       const userData = await authService.registration(username, password, email, fullname);
       // вписываем куку - истекает за 30 дней, httpOnly - нельзя увидеть и изменить с браузера
       res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24* 60 * 60 * 1000, httpOnly: true})

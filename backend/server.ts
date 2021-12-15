@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)
 app.post('/auth/logout', AuthCtrl.logout);
-app.get('/token/activate');
-app.get('/token/refresh');
+app.get('/token/activate:link', AuthCtrl.activate);
+app.get('/token/refresh', AuthCtrl.refresh);
 
 
 
