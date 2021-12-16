@@ -1,12 +1,12 @@
-
 const nodemailer = require('nodemailer');
+
 class MailService {
   public transporter: any;
 
   constructor() {
         this.transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
-          port: process.env.SMTP_PASSWORD,
+          port: process.env.SMTP_PORT,
           secure: false,
           auth: {
               user: process.env.SMTP_USER,
@@ -16,10 +16,11 @@ class MailService {
   }
 
   async sendActivationMain(to: string, link: string) {
+  console.log(to, link, process.env.SMTP_USER, process.env.API_URL,)
         await this.transporter.sendMail({
           from: process.env.SMTP_USER,
-          to,
-          subject: 'Активация аккаунта на ' + process.env,
+          to: to,
+          subject: 'Активация аккаунта на ' + process.env.API_URL,
           text: '',
           html:
             `
@@ -29,8 +30,9 @@ class MailService {
             </div>
             `
         })
+    console.log(link)
   }
 }
 
-export const mailService = new MailService();
+module.exports = new MailService();
 

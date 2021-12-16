@@ -1,17 +1,21 @@
 module.exports = class UserDto {
-  username;
-  id;
-  roles;
-  fullname;
-  email;
-  activationLink;
-  constructor(model: any) {
-    this.email = model.email;
-    this.id = model._id;
-    this.roles = model.roles;
-    this.username = model.username;
-    this.fullname = model.fullname;
-    this.activationLink = model.activationLink;
-  }
-}
+  public username;
+  public id;
+  public roles;
+  public fullname;
+  public email;
+  public activationLink;
+  public isActivated;
+  public posts;
 
+  constructor(model: any) {
+    this.id = model._id;
+    this.email = model.email;
+    this.fullname = model.fullname;
+    this.username = model.username;
+    this.isActivated = model.isActivated;
+    this.activationLink = model.activationLink;
+    this.roles = model.roles;
+    this.posts = model.posts;
+  }
+};

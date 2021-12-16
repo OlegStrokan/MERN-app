@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-import { UserModelInterface } from './UserModel';
 
 
 export interface TokenModelInterface {

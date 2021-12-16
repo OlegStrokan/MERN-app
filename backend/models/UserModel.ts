@@ -1,4 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
+import { PostModelInterface } from './PostModel';
 
 export interface UserModelInterface {
 	_id?: string
@@ -7,14 +8,16 @@ export interface UserModelInterface {
 	username: string;
 	password: string;
 	roles: string;
-	posts?: string[];
+	isActivated: boolean;
+	activationLink: string;
+	posts?: PostModelInterface[];
 }
 
 export type UserModelDocumentInterface = UserModelInterface & Document;
 
 const UserSchema = new Schema<UserModelInterface>({
 	email: {
-		unique: true,
+		unique: false,
 		required: true,
 		type: String,
 	},
@@ -23,7 +26,7 @@ const UserSchema = new Schema<UserModelInterface>({
 		type: String,
 	},
 	username: {
-		unique: true,
+		unique: false,
 		required: true,
 		type: String,
 	},
@@ -36,8 +39,7 @@ const UserSchema = new Schema<UserModelInterface>({
 		type: Boolean,
 	},
 	activationLink: {
-		required: true,
-		type: Boolean,
+		type: String,
 	},
 	roles: [{ type: String, ref: 'Role'}],
 	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],

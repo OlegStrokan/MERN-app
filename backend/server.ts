@@ -2,7 +2,6 @@ import express from 'express';
 import {UserCtrl} from "./controllers/UserController";
 import * as dotenv from 'dotenv'
 import './db'
-import * as bodyParser from 'body-parser';
 import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';
@@ -14,15 +13,17 @@ const cors = require('cors');
 dotenv.config();
 const app = express();
 
-app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({
+	credentials: true,
+	origin: process.env.CLIENT_URL
+}));
+
 
 app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)
 app.post('/auth/logout', AuthCtrl.logout);
-app.get('/token/activate:link', AuthCtrl.activate);
+app.get('/auth/activate/:link', AuthCtrl.activate);
 app.get('/token/refresh', AuthCtrl.refresh);
 
 
