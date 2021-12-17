@@ -10,7 +10,7 @@ const bodyParser  = require('body-parser');
 const authMiddleware = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
+const errorMiddleware = require('./middleware/error-middleware')
 dotenv.config();
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(cors({
 }));
  app.use(bodyParser.json());
  app.use(bodyParser.urlencoded({ extended: false }));
-
+ app.use(errorMiddleware);
 
 app.post('/auth/registration', AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)

@@ -5,8 +5,6 @@ import { isValidObjectId } from '../utils/isValidObjectId';
 import { validationResult } from 'express-validator';
 import { generateAccessToken } from '../utils/geterateAccessToken';
 import { authService } from '../services/AuthService';
-import { userService } from '../services/UserService';
-
 
 
 class AuthController {
@@ -23,11 +21,11 @@ class AuthController {
       })
 
     } catch (e) {
-      res.status(400).json({ message: 'Registration error' })
+      next(e)
     }
   }
 
-  async login(req: express.Request, res: express.Response) {
+  async login(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const { username, password } = req.body.data;
       const user = await UserModel.findOne({ username })
@@ -42,38 +40,35 @@ class AuthController {
       const token = generateAccessToken(user._id, user.roles);
       return res.json({ token, user, resultCode: 0 })
     } catch (e) {
-      res.status(400).json({ message: 'Login error' })
+       next(e)
     }
   }
-  async logout(req: express.Request, res: express.Response): Promise<void> {
+  async logout(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       res.cookie('token', '');
       res.status(200).json({
         status: 'success',
         message: 'Logout success'
       });
-    } catch (error) {
-      res.status(500).json({
-        status: 'error',
-        message: error,
-      });
+    } catch (e) {
+      next(e)
     }
 
   }
-  async activate(req: express.Request, res: express.Response): Promise<void> {
+  async activate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
         const activationLink = req.params.link;
         await authService.activate(activationLink);
         return res.redirect(process.env.CLIENT_URL);
-    } catch (error) {
-        console.log(error);
+    } catch (e) {
+      next(e)
     }
   }
-  async refresh(req: express.Request, res: express.Response): Promise<void> {
+  async refresh(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
 
-    } catch (error) {
-
+    } catch (e) {
+      next(e)
     }
   }
 
