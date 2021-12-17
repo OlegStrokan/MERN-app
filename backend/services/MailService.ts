@@ -1,26 +1,26 @@
 const nodemailer = require('nodemailer');
 
 class MailService {
-  public transporter: any;
+   transporter: any;
 
   constructor() {
         this.transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: process.env.SMTP_PORT,
+          host: 'smtp.gmail.com',
+          port: 587,
           secure: false,
           auth: {
-              user: process.env.SMTP_USER,
-              password: process.env.SMTP_PASSWORD
+              user: 'oleg14ua71@gmail.com',
+              pass: 88488848
           }
         });
   }
 
   async sendActivationMain(to: string, link: string) {
-  console.log(to, link, process.env.SMTP_USER, process.env.API_URL,)
+
         await this.transporter.sendMail({
-          from: process.env.SMTP_USER,
+          from: 'oleg14ua71@gmail.com',
           to: to,
-          subject: 'Активация аккаунта на ' + process.env.API_URL,
+          subject: 'Активация аккаунта на ' + 'http://localhost:8000',
           text: '',
           html:
             `

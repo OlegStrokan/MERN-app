@@ -6,6 +6,7 @@ import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';
 import { AuthCtrl } from './controllers/AuthController';
+const bodyParser  = require('body-parser');
 const authMiddleware = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -18,6 +19,8 @@ app.use(cors({
 	credentials: true,
 	origin: process.env.CLIENT_URL
 }));
+ app.use(bodyParser.json());
+ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.post('/auth/registration', AuthCtrl.registration)

@@ -10,10 +10,8 @@ import { authService } from '../services/AuthService';
 
 class AuthController {
   async registration(req: express.Request, res: express.Response, next: express.NextFunction) {
-    console.log(req.body)
     try {
       const { username, password, email, fullname } = req.body
-      console.log(req.body)
       const userData = await authService.registration(username, password, email, fullname);
       // вписываем куку - истекает за 30 дней, httpOnly - нельзя увидеть и изменить с браузера
       res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24* 60 * 60 * 1000, httpOnly: true})
@@ -62,7 +60,6 @@ class AuthController {
 
   }
   async activate(req: express.Request, res: express.Response): Promise<void> {
-    console.log(req.body, 'hello')
     try {
 
     } catch (error) {
