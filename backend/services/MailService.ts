@@ -30,7 +30,6 @@ class MailService {
             </div>
             `
         })
-    console.log(link)
   }
 }
 

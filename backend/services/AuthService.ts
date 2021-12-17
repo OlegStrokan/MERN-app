@@ -31,15 +31,19 @@ class AuthService {
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
     // сохраняем refreshToken в базу данных
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
-    return {
-      ...tokens,
-      user: userDto,
-      message: 'Пользователь успешно зарегистрирован'
-    }
+    return { ...tokens, user: userDto }
 
   }
+  async activate(activationLink: string) {
+    const user = await UserModel.findOne({activationLink})
+    if (!user) {
+      throw  new Error('Некорректная ссылка активации')
+    }
+    user.isActivated = true;
+    await user.save();
+}
 }
 
 export const authService = new AuthService();

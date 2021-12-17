@@ -5,6 +5,7 @@ import { isValidObjectId } from '../utils/isValidObjectId';
 import { validationResult } from 'express-validator';
 import { generateAccessToken } from '../utils/geterateAccessToken';
 import { authService } from '../services/AuthService';
+import { userService } from '../services/UserService';
 
 
 
@@ -61,9 +62,11 @@ class AuthController {
   }
   async activate(req: express.Request, res: express.Response): Promise<void> {
     try {
-
+        const activationLink = req.params.link;
+        await authService.activate(activationLink);
+        return res.redirect(process.env.CLIENT_URL);
     } catch (error) {
-
+        console.log(error);
     }
   }
   async refresh(req: express.Request, res: express.Response): Promise<void> {
