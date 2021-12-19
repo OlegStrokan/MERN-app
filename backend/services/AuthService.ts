@@ -3,6 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import { RoleModel } from '../models/RoleModel';
 const uuid = require('uuid');
 import { tokenService } from './TokenService';
+import { generateAccessToken } from '../utils/geterateAccessToken';
 const mailService = require('./MailService');
 const UserDto = require('../dtos/user.dto');
 const ApiError = require('../exceptions/api-error');
@@ -45,6 +46,25 @@ class AuthService {
     user.isActivated = true;
     await user.save();
 }
+  async login(email: string, password: string) {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      throw ApiError.BadRequest('Пользователь с таким email не найден')
+    }
+    const validPassword = bcrypt.compareSync(password, user.password)
+    if (!validPassword) {
+      throw ApiError.BadRequest('Неверный пароль')
+    }
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({...userDto})
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
+    return { ...tokens, user: userDto }
+  }
+  async logout(refreshToken: string) {
+    const token = await tokenService.removeToken(refreshToken);
+    return token;
+  }
 }
 
 export const authService = new AuthService();

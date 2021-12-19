@@ -5,11 +5,17 @@ import { isValidObjectId } from '../utils/isValidObjectId';
 import { validationResult } from 'express-validator';
 import { generateAccessToken } from '../utils/geterateAccessToken';
 import { authService } from '../services/AuthService';
-
+const ApiError = require('../exceptions/api-error')
 
 class AuthController {
   async registration(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        console.log(errors)
+         return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
+      }
       const { username, password, email, fullname } = req.body
       const userData = await authService.registration(username, password, email, fullname);
       // вписываем куку - истекает за 30 дней, httpOnly - нельзя увидеть и изменить с браузера
@@ -27,29 +33,20 @@ class AuthController {
 
   async login(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-      const { username, password } = req.body.data;
-      const user = await UserModel.findOne({ username })
-      if (!user) {
-        return res.json({ message: 'Пользователь ' + username + ' не найден', resultCode: 1 })
-      }
-      const validPassword = bcrypt.compareSync(password, user.password)
-      if (!validPassword) {
-        return res.json({ message: 'Введен неправильный пароль', resultCode: 1 })
-
-      }
-      const token = generateAccessToken(user._id, user.roles);
-      return res.json({ token, user, resultCode: 0 })
+      const {email, password} = req.body;
+      const userData = await authService.login(email, password);
+      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+      return res.json(userData);
     } catch (e) {
-       next(e)
+      next(e);
     }
   }
-  async logout(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+  async logout(req: express.Request, res: express.Response, next: express.NextFunction){
     try {
-      res.cookie('token', '');
-      res.status(200).json({
-        status: 'success',
-        message: 'Logout success'
-      });
+      const { refreshToken } = req.cookies;
+      const token = await authService.logout(refreshToken)
+      res.clearCookie('refreshToken');
+      return res.json(token);
     } catch (e) {
       next(e)
     }

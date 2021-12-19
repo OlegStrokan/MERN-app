@@ -6,6 +6,7 @@ import { updateValidations } from './validations/updateUser';
 import { PostCtrl } from './controllers/PostsController';
 import { postValidation } from './validations/post';
 import { AuthCtrl } from './controllers/AuthController';
+import { registerValidations } from './validations/register';
 const bodyParser  = require('body-parser');
 const authMiddleware = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
@@ -23,7 +24,7 @@ app.use(cors({
  app.use(bodyParser.urlencoded({ extended: false }));
  app.use(errorMiddleware);
 
-app.post('/auth/registration', AuthCtrl.registration)
+app.post('/auth/registration', registerValidations,  AuthCtrl.registration)
 app.post('/auth/login', AuthCtrl.login)
 app.post('/auth/logout', AuthCtrl.logout);
 app.get('/auth/activate/:link', AuthCtrl.activate);
