@@ -1,9 +1,10 @@
 import { UserModel } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
 import { RoleModel } from '../models/RoleModel';
+
 const uuid = require('uuid');
 import { tokenService } from './TokenService';
-import { generateAccessToken } from '../utils/geterateAccessToken';
+
 const mailService = require('./MailService');
 const UserDto = require('../dtos/user.dto');
 const ApiError = require('../exceptions/api-error');
@@ -29,7 +30,7 @@ class AuthService {
       posts: [],
     })
     // посылаем ссылку активации на email
-    await mailService.sendActivationMain(email,`${process.env.API_URL}/auth/activate/${activationLink}`);
+    await mailService.sendActivationMain(email, `${process.env.API_URL}/auth/activate/${activationLink}`);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
     // сохраняем refreshToken в базу данных
@@ -38,14 +39,16 @@ class AuthService {
     return { ...tokens, user: userDto }
 
   }
+
   async activate(activationLink: string) {
-    const user = await UserModel.findOne({activationLink})
+    const user = await UserModel.findOne({ activationLink })
     if (!user) {
-     throw ApiError.BadRequest('Некорректная ссылка активации')
+      throw ApiError.BadRequest('Некорректная ссылка активации')
     }
     user.isActivated = true;
     await user.save();
-}
+  }
+
   async login(email: string, password: string) {
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -56,14 +59,35 @@ class AuthService {
       throw ApiError.BadRequest('Неверный пароль')
     }
     const userDto = new UserDto(user);
-    const tokens = tokenService.generateTokens({...userDto})
+    const tokens = tokenService.generateTokens({ ...userDto })
     await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
     return { ...tokens, user: userDto }
   }
+
   async logout(refreshToken: string) {
     const token = await tokenService.removeToken(refreshToken);
     return token;
+  }
+
+  async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDb ) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    // @ts-ignore
+    const user = await UserModel.findOne(userData.id)
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto })
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    return {...tokens, user: userDto}
+
+
   }
 }
 

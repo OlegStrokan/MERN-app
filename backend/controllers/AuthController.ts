@@ -1,10 +1,9 @@
 import { UserModel } from '../models/UserModel';
-import * as bcrypt from 'bcryptjs';
 import * as express from 'express';
 import { isValidObjectId } from '../utils/isValidObjectId';
 import { validationResult } from 'express-validator';
-import { generateAccessToken } from '../utils/geterateAccessToken';
 import { authService } from '../services/AuthService';
+
 const ApiError = require('../exceptions/api-error')
 
 class AuthController {
@@ -14,12 +13,12 @@ class AuthController {
 
       if (!errors.isEmpty()) {
         console.log(errors)
-         return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
+        return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
       }
       const { username, password, email, fullname } = req.body
       const userData = await authService.registration(username, password, email, fullname);
       // вписываем куку - истекает за 30 дней, httpOnly - нельзя увидеть и изменить с браузера
-      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24* 60 * 60 * 1000, httpOnly: true})
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
       return res.json({
         message: 'Регистрация прошла успешно',
@@ -33,15 +32,16 @@ class AuthController {
 
   async login(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-      const {email, password} = req.body;
+      const { email, password } = req.body;
       const userData = await authService.login(email, password);
-      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
       return res.json(userData);
     } catch (e) {
       next(e);
     }
   }
-  async logout(req: express.Request, res: express.Response, next: express.NextFunction){
+
+  async logout(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const { refreshToken } = req.cookies;
       const token = await authService.logout(refreshToken)
@@ -52,18 +52,23 @@ class AuthController {
     }
 
   }
+
   async activate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-        const activationLink = req.params.link;
-        await authService.activate(activationLink);
-        return res.redirect(process.env.CLIENT_URL);
+      const activationLink = req.params.link;
+      await authService.activate(activationLink);
+      return res.redirect(process.env.CLIENT_URL);
     } catch (e) {
       next(e)
     }
   }
-  async refresh(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    try {
 
+  async refresh(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      const { refreshToken } = req.cookies;
+      const userData = await authService.refresh(refreshToken);
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      return res.json(userData);
     } catch (e) {
       next(e)
     }
