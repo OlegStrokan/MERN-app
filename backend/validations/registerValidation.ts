@@ -1,6 +1,6 @@
 import * as validator from "express-validator"
 
-export const registerValidations = [
+export const registerValidation = [
 	validator.body('email', 'Enter your email').isEmail().withMessage('Incorrect email').isLength({
 		min: 10,
 		max: 40,

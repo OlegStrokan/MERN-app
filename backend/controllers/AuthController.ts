@@ -12,7 +12,6 @@ class AuthController {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        console.log(errors)
         return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
       }
       const { username, password, email, fullname } = req.body
@@ -32,6 +31,11 @@ class AuthController {
 
   async login(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
+      }
       const { email, password } = req.body;
       const userData = await authService.login(email, password);
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
