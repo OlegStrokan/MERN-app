@@ -8,9 +8,9 @@ import { postValidation } from './validations/post';
 import { AuthCtrl } from './controllers/AuthController';
 import { registerValidations } from './validations/register';
 const bodyParser  = require('body-parser');
-const authMiddleware = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const authMiddleware = require('./middleware/authMiddleware')
 const errorMiddleware = require('./middleware/error-middleware')
 dotenv.config();
 const app = express();
@@ -31,12 +31,7 @@ app.get('/auth/activate/:link', AuthCtrl.activate);
 app.get('/token/refresh', AuthCtrl.refresh);
 
 
-
-app.patch('/profile', updateValidations, AuthCtrl.update);
-app.get('/profile/:id', authMiddleware, UserCtrl.show);
-
-
-app.get('/users', authMiddleware, UserCtrl.index);
+app.get('/users', authMiddleware, UserCtrl.getUsers);
 
 
 app.get('/posts', PostCtrl.index);

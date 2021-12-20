@@ -1,25 +1,27 @@
 // @ts-ignore
 import express from 'express';
-const jwt = require('jsonwebtoken');
-const { secret } = require('../config');
-  module.exports = function (req: any, res: express.Response, next: express.NextFunction) {
-    if (req.method === 'OPTIONS') {
-      next()
+import { tokenService } from '../services/TokenService';
+const ApiError = require('../exceptions/api-error');
+
+module.exports = function (req: express.Request, res: express.Response, next: express.NextFunction) {
+  try {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+      return next(ApiError.UnauthorizedError());
     }
-    try {
-      const token = req.headers.authorization.split(' ')[1]
-      if (!token) {
-        return res.status(403).json({ message: 'Пользователь не авторизован' })
-      }
-
-      const decodedData = jwt.verify(token, secret)
-
-      req.user = decodedData
-      req.user = jwt.verify(token, secret)
-      next()
-
-    } catch (e) {
-      console.log(e)
-      return res.status(403).json({ message: 'Пользователь не авторизован' })
+    const accessToken = authorizationHeader.split('')[1];
+    if (!accessToken) {
+      return next(ApiError.UnauthorizedError());
     }
+
+    const userData = tokenService.validateAccessToken(accessToken);
+    if (!userData) {
+      return  next(ApiError.UnauthorizedError());
+    }
+  //@ts-ignore
+    req.user = userData;
+    next();
+  } catch(e) {
+      return next(ApiError.UnauthorizedError())
   }
+}
