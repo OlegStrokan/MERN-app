@@ -1,14 +1,14 @@
 import { instance } from './instance';
-import { LoginDto, LoginResponseDto, RegisterDto, UserDto } from '../types/login.dto';
+import { AuthResponse } from '../types/auth-response';
 
 export const authAPI = {
-  registration(data: RegisterDto): Promise<RegisterDto> {
-    return instance.post('auth/registration', {data}).then((response) => response.data)
+  registration(email: string, username: string, fullname: string, password: string, password2: string, ): Promise<AuthResponse> {
+    return instance.post<AuthResponse>('auth/registration', {email, username, fullname, password, password2} ).then((response) => response.data)
   },
-  login(data: LoginDto): Promise<LoginResponseDto> {
-    return instance.post<LoginResponseDto>('auth/login', {data}).then((response) => response.data)
+  login(email: string, password: string): Promise<AuthResponse> {
+    return instance.post<AuthResponse>('auth/login', {email, password} ).then((response) => response.data)
   },
-  updateProfile(fullname: string, username: string, email: string, _id: string): Promise<UserDto> {
-    return instance.patch<UserDto>('profile', {fullname, username, email, _id}).then((response) => response.data)
+  logout(): Promise<void> {
+    return instance.post('auth/logout')
   }
 }

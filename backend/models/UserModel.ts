@@ -7,7 +7,7 @@ export interface UserModelInterface {
 	fullname: string;
 	username: string;
 	password: string;
-	roles: string;
+	roles: string[];
 	isActivated: boolean;
 	activationLink: string;
 	posts?: PostModelInterface[];

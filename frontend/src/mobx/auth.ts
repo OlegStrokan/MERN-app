@@ -1,58 +1,61 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { LoginDto, RegisterDto, UserDto } from '../types/login.dto';
 import { authAPI } from '../api/auth-api';
+import { UserDto } from '../types/user.dto';
 import { saveToLS } from '../utils/localStorage/setToLS';
+import { PostDto } from '../types/post.dto';
 
 class Auth {
   isAuth = false;
-  user: UserDto = {
+  user = {
     _id: null,
     username: null,
     password: null,
     email: null,
     fullname: null,
+    isActivated: false,
+    activationLink: null,
     posts: null,
     roles: null,
-  };
+  } as unknown as UserDto;
+
   error: any = null;
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  registration = async({ email, username, fullname, password }: RegisterDto) => {
-    await authAPI.registration({ email, username, fullname, password })
+  setAuth(value: boolean) {
+    this.isAuth = value;
+  }
+
+  setUser(user: UserDto) {
+    this.user = user
+  }
+
+   async registration( email: string, username: string, fullname: string, password: string, password2: string) {
+    await authAPI.registration( email, username, fullname, password, password2)
   };
-  login = async({ username, password }: LoginDto) => {
-    const response = await authAPI.login({ username, password })
-    runInAction(() => {
-      if (response.resultCode == 1) {
-        this.error = response.message
-      } else {
-        this.isAuth = true;
-        this.user._id = response.user._id;
-        this.user.username = response.user.username;
-        this.user.fullname = response.user.fullname;
-        this.user.email = response.user.email;
-        this.user.posts = response.user.posts;
-        this.user.roles = response.user.roles;
-        localStorage.setItem('token', JSON.stringify(response.token));
-      }
-    })
+   async login(username: string, password: string) {
+     try {
+       const response = await authAPI.login(username, password)
+       localStorage.setItem('token', JSON.stringify(response.accessToken));
+       this.setAuth(true);
+       this.setUser(response.user)
+     } catch (e: any) {
+       console.log(e.response?.message)
+     }
+
 
   };
-  logout = async( _id: string | null ) => {
-    runInAction(() => {
-      this.isAuth = false
-    })
-  }
-  updateProfile = async (fullname: string, email: string, username: string, _id: string) => {
-    const response = await authAPI.updateProfile(fullname, email, username, _id)
-    runInAction(() => {
-      this.user.username = response.username;
-      this.user.fullname = response.fullname;
-      this.user.email = response.email;
-    })
+   async logout() {
+     try {
+       const response = await authAPI.logout();
+       localStorage.removeItem('token');
+       this.setAuth(false);
+       this.setUser({} as UserDto)
+     } catch (e: any) {
+       console.log(e.response?.message)
+     }
   }
 }
 
