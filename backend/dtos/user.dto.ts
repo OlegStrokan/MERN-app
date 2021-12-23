@@ -1,7 +1,7 @@
 module.exports = class UserDto {
   public username;
   public id;
-  public roles;
+  public role;
   public fullname;
   public email;
   public activationLink;
@@ -15,7 +15,7 @@ module.exports = class UserDto {
     this.username = model.username;
     this.isActivated = model.isActivated;
     this.activationLink = model.activationLink;
-    this.roles = model.roles;
+    this.role = model.role;
     this.posts = model.posts;
   }
 };

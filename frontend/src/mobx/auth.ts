@@ -13,7 +13,7 @@ class Auth {
     isActivated: false,
     activationLink: null,
     posts: null,
-    roles: null,
+    role: null,
   } as unknown as UserDto;
 
   error: any = null;

@@ -41,7 +41,7 @@ const UserSchema = new Schema<UserModelInterface>({
 	activationLink: {
 		type: String,
 	},
-	roles: { type: String, ref: 'Role'},
+	role: { type: String, ref: 'Role'},
 	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 

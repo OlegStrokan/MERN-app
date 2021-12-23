@@ -39,7 +39,7 @@ export const Profile = () => {
          {!auth.user.isActivated && <Typography variant="h5" sx={{ m: 2 }}>You need activate account! Please, check your email</Typography> }
           <Typography variant="h5" sx={{ m: 2}}>User name: {auth.user.username}</Typography>
           <Typography variant="h5" sx={{ m: 2}}>Full name: {auth.user.fullname}</Typography>
-          <Typography variant="h5" sx={{ m: 2}}>Role: {auth.user.roles}</Typography>
+          <Typography variant="h5" sx={{ m: 2}}>Role: {auth.user.role}</Typography>
           <Typography variant="h5" sx={{ m: 2}}>Email: {auth.user.email}</Typography>
           <Typography variant="h5" sx={{ m: 2}}>Posts: {auth.user.posts?.length}</Typography>
           <Button variant="contained" onClick={() => setEditMode(true)}>Update profile</Button>
@@ -76,7 +76,7 @@ export const Profile = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex'}}>
-              <Typography variant="h6">Role: {auth.user.roles} // <span className={styles.error}>You can't change your role</span></Typography>
+              <Typography variant="h6">Role: {auth.user.role} // <span className={styles.error}>You can't change your role</span></Typography>
             </Grid>
             <Grid item xs={12}>
               <TextField
