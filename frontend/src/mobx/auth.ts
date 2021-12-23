@@ -1,8 +1,6 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { authAPI } from '../api/auth-api';
 import { UserDto } from '../types/user.dto';
-import { saveToLS } from '../utils/localStorage/setToLS';
-import { PostDto } from '../types/post.dto';
 
 class Auth {
   isAuth = false;
@@ -32,19 +30,23 @@ class Auth {
     this.user = user
   }
 
-   async registration( email: string, username: string, fullname: string, password: string, password2: string) {
-    await authAPI.registration( email, username, fullname, password, password2)
+  setError(error: any) {
+    this.error = error;
+  }
+
+   async registration( email: string, username: string, fullname: string, password: string, confirmPassword: string) {
+    await authAPI.registration( email, username, fullname, password, confirmPassword)
   };
    async login(username: string, password: string) {
      try {
+       debugger;
        const response = await authAPI.login(username, password)
        localStorage.setItem('token', JSON.stringify(response.accessToken));
        this.setAuth(true);
        this.setUser(response.user)
      } catch (e: any) {
-       console.log(e.response?.message)
+       this.setError(e.response?.message)
      }
-
 
   };
    async logout() {
@@ -54,8 +56,9 @@ class Auth {
        this.setAuth(false);
        this.setUser({} as UserDto)
      } catch (e: any) {
-       console.log(e.response?.message)
+       this.setError(e.response?.message)
      }
+
   }
 }
 

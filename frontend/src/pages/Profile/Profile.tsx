@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from '../../utils/validators/updateProfile';
 import styles from './Profile.module.css'
-import { UserDto } from '../../types/login.dto';
 
 export const Profile = () => {
 
@@ -29,7 +28,7 @@ export const Profile = () => {
   }
 
   const onSubmit = (event: any) => {
-    auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string).then(() => setEditMode(false))
+   // auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string).then(() => setEditMode(false))
   }
 
   return (
@@ -37,6 +36,7 @@ export const Profile = () => {
       {!editMode
         ?
         <>
+         {!auth.user.isActivated && <Typography variant="h5" sx={{ m: 2 }}>You need activate account! Please, check your email</Typography> }
           <Typography variant="h5" sx={{ m: 2}}>User name: {auth.user.username}</Typography>
           <Typography variant="h5" sx={{ m: 2}}>Full name: {auth.user.fullname}</Typography>
           <Typography variant="h5" sx={{ m: 2}}>Role: {auth.user.roles}</Typography>

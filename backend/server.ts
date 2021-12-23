@@ -3,10 +3,10 @@ import {UserCtrl} from "./controllers/UserController";
 import * as dotenv from 'dotenv'
 import './db';
 import { PostCtrl } from './controllers/PostsController';
-import { postValidation } from './validations/postValidation';
+import { postValidation } from './validations/post-validation';
 import { AuthCtrl } from './controllers/AuthController';
-import { registerValidation } from './validations/registerValidation';
-import { loginValidation } from './validations/loginValidation';
+import { registerValidation } from './validations/register-validation';
+import { loginValidation } from './validations/login-validation';
 const bodyParser  = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -21,6 +21,7 @@ app.use(cors({
 	credentials: true,
 	origin: process.env.CLIENT_URL
 }));
+
 
  app.use(bodyParser.json());
  app.use(bodyParser.urlencoded({ extended: false }));

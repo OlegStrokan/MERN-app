@@ -26,7 +26,7 @@ export const registerValidation = [
 			min: 6
 		}).withMessage('Password must be longer than 6 symbols')
 		.custom((value, {req}) => {
-			if (value !== req.body.password2) {
+			if (value !== req.body.passwordConfirmation) {
 				throw new Error('Passwords don\'t match')
 			} else {
 				return value;

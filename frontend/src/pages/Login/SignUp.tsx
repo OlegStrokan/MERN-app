@@ -26,7 +26,7 @@ interface SignUpInterface {
 
 export const SignUp:React.FC<SignUpInterface> = ({ onModelChange }) => {
   const onSubmit = (event: any) => {
-    auth.registration({email: event.email, username: event.username, fullname: event.fullname, password: event.password})
+    auth.registration( event.email, event.username, event.fullname, event.password, event.passwordConfirmation)
   };
 
   const {
@@ -107,6 +107,20 @@ export const SignUp:React.FC<SignUpInterface> = ({ onModelChange }) => {
             />
             <Typography variant="subtitle2" color="error">
               {errors.password?.message}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="passwordConfirmation"
+              label="Confirm password"
+              autoComplete="Confirm password"
+              {...register('passwordConfirmation')}
+              error={!!errors.passwordConfirmation}
+            />
+            <Typography variant="subtitle2" color="error">
+              {errors.passwordConfirmation?.message}
             </Typography>
           </Grid>
           <Grid item xs={12} className={styles.acceptTerms}>

@@ -12,7 +12,9 @@ class AuthController {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
+        return res.status(400).json({
+        message: 'Ошибка при валидации', errors: errors.array()
+      });
       }
       const { username, password, email, fullname } = req.body
       const userData = await authService.registration(username, password, email, fullname);

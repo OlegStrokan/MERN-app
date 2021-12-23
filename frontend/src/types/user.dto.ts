@@ -7,7 +7,7 @@ export interface UserDto {
   fullname: string;
   username: string;
   password: string;
-  roles: string[];
+  role: string;
   isActivated: boolean;
   activationLink: string;
   posts?: PostDto[];

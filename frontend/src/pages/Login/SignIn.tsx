@@ -16,16 +16,16 @@ interface SignInInterface {
   onModelChange: () => void;
 }
 
-export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
+export const SignIn: React.FC<SignInInterface> = ({ onModelChange }) => {
+  const onSubmit = (event: any) => {
+    auth.login(event.email, event.password)
+  };
   const {
     register, control, handleSubmit, formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (event: any) => {
-    auth.login({ username: event.username, password: event.password })
-  };
 
   return (
     <Box
@@ -37,7 +37,7 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
+        <LockOutlinedIcon/>
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign in
@@ -48,14 +48,14 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
             <TextField
               required
               fullWidth
-              id="username"
-              label="User Name"
-              autoComplete="User name"
-              {...register('username')}
-              error={!!errors.username}
+              id="email"
+              label="Email"
+              autoComplete="Email"
+              {...register('email')}
+              error={!!errors.email}
             />
             <Typography variant="subtitle2" color="error">
-              {errors.username?.message}
+              {errors.email?.message}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -74,14 +74,14 @@ export const SignIn:React.FC<SignInInterface> = ({ onModelChange }) => {
           </Grid>
           {auth.error && <Grid item xs={12}><Typography variant="h6" color="error">{auth.error}</Typography></Grid>}
           <Grid item xs={12}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 1, mb: 2, p: 2 }}
-          >
-            Sign In
-          </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 1, mb: 2, p: 2 }}
+            >
+              Sign In
+            </Button>
           </Grid>
 
           <Grid item xs={12}>

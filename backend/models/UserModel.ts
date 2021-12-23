@@ -7,7 +7,7 @@ export interface UserModelInterface {
 	fullname: string;
 	username: string;
 	password: string;
-	roles: string[];
+	role: string;
 	isActivated: boolean;
 	activationLink: string;
 	posts?: PostModelInterface[];
@@ -41,7 +41,7 @@ const UserSchema = new Schema<UserModelInterface>({
 	activationLink: {
 		type: String,
 	},
-	roles: [{ type: String, ref: 'Role'}],
+	roles: { type: String, ref: 'Role'},
 	posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
