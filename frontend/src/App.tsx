@@ -4,6 +4,7 @@ import { Profile } from './pages/Profile/Profile';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { Posts } from './pages/Posts/Posts';
 import { Header } from './components/Header/Header';
+import { Typography } from '@mui/material';
 
 export const App = () => {
 React.useEffect(() => {
@@ -15,13 +16,13 @@ React.useEffect(() => {
       <nav className="Nav">
         <ul>
           <li>
-            <Link to="/login">Login</Link>
+            <Link to="/login"><Typography>Login</Typography></Link>
           </li>
           <li>
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile"><Typography>Profile</Typography></Link>
           </li>
           <li>
-            <Link to="/posts">Posts</Link>
+            <Link to="/posts"><Typography>Posts</Typography></Link>
           </li>
         </ul>
       </nav>

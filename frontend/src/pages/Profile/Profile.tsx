@@ -28,7 +28,7 @@ export const Profile = () => {
   }
 
   const onSubmit = (event: any) => {
-   // auth.updateProfile(event.fullname,event.username, event.email, auth.user._id as string).then(() => setEditMode(false))
+   auth.updateProfile(auth.user.id as string, event.email, event.username, event.fullname).then(() => setEditMode(false))
   }
 
   return (
