@@ -1,6 +1,5 @@
 import { UserModel } from '../models/UserModel';
 import * as bcrypt from 'bcryptjs';
-import { RoleModel } from '../models/RoleModel';
 
 const uuid = require('uuid');
 import { tokenService } from './TokenService';
@@ -11,12 +10,11 @@ const ApiError = require('../exceptions/api-error');
 
 class AuthService {
   async registration(username: string, password: string, email: string, fullname: string) {
-    const candidate = await UserModel.findOne({ username })
+    const candidate = await UserModel.findOne({ email })
     if (candidate) {
       throw ApiError.BadRequest(`Пользователь с почтовым адресом ${email} уже существует`);
     }
     const hashPassword = bcrypt.hashSync(password, 7)
-    const userRole = await RoleModel.findOne({ value: 'USER' })
     // ссылка для активации аккаунта
     const activationLink = uuid.v4();
     const user = await UserModel.create({
@@ -26,7 +24,7 @@ class AuthService {
       password: hashPassword,
       activationLink: activationLink,
       isActivated: false,
-      roles: [userRole.value],
+      role: 'USER',
       posts: [],
     })
     // посылаем ссылку активации на email
@@ -81,7 +79,7 @@ class AuthService {
     }
 
     // @ts-ignore
-    const user = await UserModel.findOne(userData.id)
+    const user = await UserModel.findById(userData.id)
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
     await tokenService.saveToken(userDto.id, tokens.refreshToken)

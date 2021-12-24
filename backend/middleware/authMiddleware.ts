@@ -18,7 +18,7 @@ module.exports = function (req: express.Request, res: express.Response, next: ex
     if (!userData) {
       return  next(ApiError.UnauthorizedError());
     }
-  //@ts-ignore
+    //@ts-ignore
     req.user = userData;
     next();
   } catch(e) {

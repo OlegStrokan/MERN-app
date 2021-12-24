@@ -33,11 +33,11 @@ app.post('/auth/registration', registerValidation,  AuthCtrl.registration)
 app.post('/auth/login', loginValidation,  AuthCtrl.login)
 app.post('/auth/logout', AuthCtrl.logout);
 app.get('/auth/activate/:link', AuthCtrl.activate);
-app.get('/token/refresh', AuthCtrl.refresh);
+app.get('/auth/me', AuthCtrl.refresh);
 
 // users functional
-app.get('/users', UserCtrl.getUsers);
-app.post('/profile', UserCtrl.updateProfile)
+app.get('/users', authMiddleware, UserCtrl.getUsers);
+app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 
 // not ready
 app.get('/posts', PostCtrl.index);

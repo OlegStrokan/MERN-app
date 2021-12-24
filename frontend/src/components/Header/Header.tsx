@@ -12,7 +12,7 @@ export const Header = () => {
     <Card className={styles.root}>
       {!auth.isAuth
         ?  <Button variant="contained" onClick={() => navigate('/login')}>Login</Button>
-        : <Button variant="contained" onClick={() => window.location.reload()}>Logout</Button>
+        : <Button variant="contained" onClick={() => auth.logout()}>Logout</Button>
       }
     </Card>
   );
