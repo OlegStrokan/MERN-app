@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AuthResponse } from '../types/auth-response';
 
 export const BASE_URL = 'http://localhost:8000'
 
