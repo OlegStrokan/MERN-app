@@ -8,8 +8,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from '../../utils/validators/updateProfile';
 import styles from './Profile.module.css'
+import { observer } from 'mobx-react-lite';
 
-export const Profile = () => {
+export const Profile: React.FC = observer(() => {
 
   const {
     register, control, handleSubmit, formState: { errors },
@@ -112,4 +113,4 @@ export const Profile = () => {
       }
     </Card>
   );
-};
+});

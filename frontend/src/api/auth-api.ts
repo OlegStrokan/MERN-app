@@ -6,7 +6,6 @@ export const authAPI = {
     return instance.post<AuthResponse>('auth/registration', {email, username, fullname, password, passwordConfirmation} ).then((response) => response.data)
   },
   login(email: string, password: string): Promise<AuthResponse> {
-    debugger
     return instance.post<AuthResponse>('auth/login', {email, password}).then((response) => response.data)
   },
   logout(): Promise<void> {

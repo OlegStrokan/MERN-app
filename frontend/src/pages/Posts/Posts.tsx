@@ -2,8 +2,9 @@ import React from 'react';
 import { Card, Typography } from '@mui/material';
 import { auth } from '../../mobx/auth';
 import { Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-export const Posts = () => {
+export const Posts = observer(() => {
   React.useEffect(() => {
 
   }, [auth.isAuth])
@@ -22,4 +23,4 @@ export const Posts = () => {
 
     </Card>
   );
-};
+});

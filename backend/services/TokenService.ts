@@ -19,14 +19,12 @@ class TokenService {
       return tokenData.save();
     }
 
-    const token = await TokenModel.create({ user: userId, refreshToken });
-    return token;
+    return await TokenModel.create({ user: userId, refreshToken });
   }
 
   async validateAccessToken(token: string) {
     try {
-      const userData = jwt.verity(token, process.env.JWT_ACCESS_SECRET);
-      return userData;
+      return jwt.verity(token, process.env.JWT_ACCESS_SECRET);
     } catch (e) {
       return null;
     }
