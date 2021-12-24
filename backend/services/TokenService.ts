@@ -12,6 +12,23 @@ class TokenService {
     }
   }
 
+   validateAccessToken(token: string) {
+    try {
+      return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    } catch (e) {
+      return null;
+    }
+  }
+
+   validateRefreshToken(token: string) {
+    try {
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+    } catch (e) {
+      return null;
+    }
+  }
+
   async saveToken(userId: string, refreshToken: string) {
     const tokenData = await TokenModel.findOne({ user: userId })
     if (tokenData) {
@@ -22,22 +39,6 @@ class TokenService {
     return await TokenModel.create({ user: userId, refreshToken });
   }
 
-  async validateAccessToken(token: string) {
-    try {
-      return jwt.verity(token, process.env.JWT_ACCESS_SECRET);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async validateRefreshToken(token: string) {
-    try {
-      return jwt.verity(token, process.env.JWT_REFRESH_SECRET);
-
-    } catch (e) {
-      return null;
-    }
-  }
 
 
   async removeToken(refreshToken: string) {

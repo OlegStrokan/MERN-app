@@ -36,8 +36,8 @@ app.get('/auth/activate/:link', AuthCtrl.activate);
 app.get('/token/refresh', AuthCtrl.refresh);
 
 // users functional
-app.get('/users', UserCtrl.getUsers);
-app.post('/profile', UserCtrl.updateProfile)
+app.get('/users', authMiddleware, UserCtrl.getUsers);
+app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 
 // not ready
 app.get('/posts', PostCtrl.index);

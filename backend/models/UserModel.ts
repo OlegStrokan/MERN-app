@@ -17,7 +17,7 @@ export type UserModelDocumentInterface = UserModelInterface & Document;
 
 const UserSchema = new Schema<UserModelInterface>({
 	email: {
-		unique: false,
+		unique: true,
 		required: true,
 		type: String,
 	},
@@ -26,12 +26,12 @@ const UserSchema = new Schema<UserModelInterface>({
 		type: String,
 	},
 	username: {
-		unique: false,
 		required: true,
 		type: String,
 	},
 	password: {
 		required: true,
+		unique: false,
 		type: String,
 	},
 	isActivated: {
