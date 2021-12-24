@@ -1,14 +1,24 @@
 # First fullstack app
 
+### V_2.2.0:
+
 First app with completely frontend and backend
 
-## This project was created with:
-## Frontend:
+Available endpoints: 
+
+- *auth/registration - for register new account*
+- *auth/login - for login if you already have account*
+- *auth/logout - for logout (stop session)*
+- *auth/activate/:link - for get activation link*
+- *auth/me - for refresh session*
+
+
+## Frontend stack:
 ### - *React*
 ### - *Mobx*
 ### - *Material UI*
 
-## Backend:
+## Backend stack:
 ### - *Express*
 ### - *Mongodb*
 
@@ -16,16 +26,12 @@ First app with completely frontend and backend
 
 ## Available Scripts for frontend
 
-In the frontend directory, you can run:
-
 ### `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Available Scripts in backend
-
-In the backend directory, you can run:
+## Available Scripts for backend
 
 ### `yarn dev`
 
