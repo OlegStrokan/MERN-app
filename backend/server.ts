@@ -42,9 +42,8 @@ app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 // user's post functional
 app.get('/posts', PostCtrl.index);
 app.post('/posts', authMiddleware, PostCtrl.create);
-app.delete('/posts/:id', authMiddleware, PostCtrl.delete);
 app.patch('/posts/:id', authMiddleware, postValidation, PostCtrl.update);
-
+app.delete('/posts/:id', authMiddleware, PostCtrl.delete);
 
 
 app.listen(8000, () => {

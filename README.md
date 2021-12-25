@@ -1,17 +1,27 @@
 # First fullstack app
 
-### V_2.2.0:
+### V_2.4.1
 
 First app with completely frontend and backend
 
 Available endpoints: 
 
-- *auth/registration - for register new account*
-- *auth/login - for login if you already have account*
-- *auth/logout - for logout (stop session)*
-- *auth/activate/:link - for get activation link*
-- *auth/me - for refresh session*
+Auth functional:
+- POST */auth/registration - for register new account*
+- POST */auth/login - for login if you already have account*
+- POST */auth/logout - for logout (stop session)*
+- GET */auth/activate/:link - for get activation link*
+- GET */auth/me - for refresh session*
 
+Users functional:
+- GET */users - get all users*
+- POST */profile - update your own profile*
+
+Posts functional
+- GET */posts - get all posts*
+- POST */posts - create new post*
+- PATCH */posts/:id - update existed post*
+- DELETE */posts/:id - deleted existed post*
 
 ## Frontend stack:
 ### - *React*
