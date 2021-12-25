@@ -18,7 +18,7 @@ class Posts  {
   }
 
   async getPosts() {
-    const posts = await postsAPI.getPosts()
+    const { posts } = await postsAPI.getPosts()
     this.setPosts(posts)
 
   }

@@ -1,18 +1,18 @@
 import { instance } from './instance';
-import { PostDto } from '../types/post.dto';
+import { PostDto, PostResponse } from '../types/post.dto';
 import { UserDto } from '../types/user.dto';
 
 export const postsAPI = {
-  getPosts(): Promise<PostDto[]> {
-    return instance.get('posts', {} ).then((response) => response.data)
+  getPosts(): Promise<PostResponse> {
+    return instance.get<PostResponse>('posts', {} ).then((response) => response.data)
   },
-  createPost(content: string, user: UserDto): Promise<void> {
-    return instance.post('posts', {content, user}).then((response) => response.data)
+  createPost(content: string, user: UserDto): Promise<PostResponse> {
+    return instance.post<PostResponse>('posts', {content, user}).then((response) => response.data)
   },
-  updatePost(post: PostDto): Promise<void> {
-    return instance.patch('posts').then((response) => response.data)
+  updatePost(post: PostDto): Promise<PostResponse> {
+    return instance.patch<PostResponse>('posts').then((response) => response.data)
   },
-  deletePost(): Promise<void> {
-    return instance.delete('posts').then((response) => response.data)
+  deletePost(): Promise<PostResponse> {
+    return instance.delete<PostResponse>('posts').then((response) => response.data)
   }
 }

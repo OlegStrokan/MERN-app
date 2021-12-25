@@ -9,12 +9,11 @@ class PostController {
 		try {
 			const posts = await PostModel.find();
 			res.json({
-				status: 'success',
+				message: 'success',
 				data: posts,
 			});
 		} catch (error) {
 			res.status(500).json({
-				status: 'error',
 				message: error,
 			});
 		}
@@ -46,16 +45,16 @@ class PostController {
 				// @ts-ignore
 				userById.posts.push(post);
 				await userById.save();
+				const posts = await PostModel.find();
 
 				res.json({
-					status: 'success',
-					data: userById
+					message: 'success',
+					data: posts
 				});
 
 			}
 		} catch (error) {
 			res.status(500).json({
-				status: 'error',
 				message: error,
 			});
 		}
@@ -75,8 +74,10 @@ class PostController {
 				if (currentPost) {
 					if (String(currentPost._id) === String(postId)) {
 						currentPost.remove();
+						const posts = await PostModel.find();
 						res.status(200).send({
-							message: 'success'
+							message: 'success',
+							posts: posts
 						});
 					} else {
 						res.status(403).send({
@@ -122,9 +123,10 @@ class PostController {
 						currentPost.content = req.body.content;
 						currentPost.likesCount = req.body.likesCount
 						currentPost.save();
+						const posts = await PostModel.find();
 						res.status(200).send({
 							message: 'success',
-							updatedPost: currentPost
+							posts: posts
 						});
 					} else {
 						res.status(403).send({

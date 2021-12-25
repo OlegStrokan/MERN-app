@@ -5,3 +5,8 @@ export interface PostDto {
   likesCount: string;
   userId: string;
 }
+
+export interface PostResponse {
+  message: string,
+  posts: PostDto[]
+}
