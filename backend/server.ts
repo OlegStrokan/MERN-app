@@ -39,15 +39,11 @@ app.get('/auth/me', AuthCtrl.refresh);
 app.get('/users', authMiddleware, UserCtrl.getUsers);
 app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 
-// not ready
+// user's post functional
 app.get('/posts', PostCtrl.index);
-app.get('/posts/:id', PostCtrl.show);
-app.get('/posts/user/:id', PostCtrl.getUserPosts);
-app.post('/users/:id/posts', PostCtrl.create);
-app.delete('/posts/:id',  PostCtrl.delete);
-app.patch('/posts/:id', postValidation, PostCtrl.update);
-
-
+app.post('/posts', authMiddleware, PostCtrl.create);
+app.delete('/posts/:id', authMiddleware, PostCtrl.delete);
+app.patch('/posts/:id', authMiddleware, postValidation, PostCtrl.update);
 
 
 

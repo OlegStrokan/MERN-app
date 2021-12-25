@@ -17,7 +17,6 @@ class UserController {
 
 	async updateProfile(req: express.Request, res: express.Response): Promise<void> {
 		const userId = req.body.id;
-		console.log(req.body);
 		try {
 			const errors = validationResult(req)
 			if (!errors.isEmpty()) {

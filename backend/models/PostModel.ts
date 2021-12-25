@@ -4,7 +4,7 @@ import { UserModelInterface } from './UserModel';
 export interface PostModelInterface {
 	_id?: string
 	content: string;
-	likesCount: string;
+	likesCount: number;
 	user: UserModelInterface
 }
 
@@ -17,7 +17,7 @@ const PostSchema = new Schema<PostModelInterface>({
 	},
 	likesCount: {
 		required: false,
-		type: String,
+		type: Number,
 	},
 	user: {
 		required: true,

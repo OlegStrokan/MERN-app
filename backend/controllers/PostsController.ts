@@ -5,10 +5,9 @@ import { PostModel, PostModelInterface } from '../models/PostModel';
 import { UserModel, UserModelInterface } from '../models/UserModel';
 class PostController {
 
-	async index(_: any, res: express.Response): Promise<void> {
+	async index(req: express.Request, res: express.Response): Promise<void> {
 		try {
-			const posts = await PostModel.find({}).populate('user').sort({ createdAt: '-1' }).exec();
-
+			const posts = await PostModel.find();
 			res.json({
 				status: 'success',
 				data: posts,
@@ -21,68 +20,11 @@ class PostController {
 		}
 	}
 
-	async show(req: any, res: express.Response): Promise<void> {
-		try {
-			const tweetId = req.params.id;
-
-			if (!isValidObjectId(tweetId)) {
-				res.status(400).send();
-				return;
-			}
-
-			const tweet = await PostModel.findById(tweetId).populate('user').exec();
-
-			if (!tweet) {
-				res.status(404).send();
-				return;
-			}
-
-			res.json({
-				status: 'success',
-				data: tweet,
-			});
-		} catch (error) {
-			res.status(500).json({
-				status: 'error',
-				message: error,
-			});
-		}
-	}
-
-	async getUserPosts(req: any, res: express.Response): Promise<void> {
-		try {
-			const userId = req.params.id;
-console.log(req.params)
-			if (!isValidObjectId(userId)) {
-				res.status(400).send();
-				return;
-			}
-			console.log(userId)
-
-			const post = await PostModel.find({ user: userId }).populate('user').exec();
-			console.log(post);
-
-			if (!post) {
-				res.status(404).send();
-				return;
-			}
-
-			res.json({
-				status: 'success',
-				data: post,
-			});
-		} catch (error) {
-			res.status(500).json({
-				status: 'error',
-				message: error,
-			});
-		}
-	}
 
 	async create(req: express.Request, res: express.Response): Promise<void> {
 		try {
 			const user = req.body.user as UserModelInterface;
-	console.log(user)
+			console.log(user)
 			if (user?._id) {
 				const errors = validationResult(req);
 
@@ -91,8 +33,10 @@ console.log(req.params)
 					return;
 				}
 
-				const data: any = {
-					content: req.body.content
+				const data: PostModelInterface = {
+					content: req.body.content,
+					likesCount: 0,
+					user: user,
 				};
 
 				const post = await PostModel.create(data);
@@ -117,36 +61,32 @@ console.log(req.params)
 		}
 	}
 
-	async userByPost(req: express.Request, res: express.Response): Promise<void> {
-			const { id } = req.params;
-			const userByPost = await PostModel.findById(id).populate('user');
-			res.send(userByPost);
-}
-
-
 
 	async delete(req: express.Request, res: express.Response): Promise<void> {
-		const post = req.body as PostModelInterface;
+		const postId = req.params.id as string;
 		try {
-			if (post) {
-				const postId = req.params.id;
-
+			if (postId) {
 				if (!isValidObjectId(postId)) {
 					res.status(400).send();
 					return;
 				}
 
 				const currentPost = await PostModel.findById(postId);
-
 				if (currentPost) {
 					if (String(currentPost._id) === String(postId)) {
 						currentPost.remove();
-						res.send();
+						res.status(200).send({
+							message: 'success'
+						});
 					} else {
-						res.status(403).send();
+						res.status(403).send({
+							message: 'Пост с таким id не найдет'
+						});
 					}
 				} else {
-					res.status(404).send();
+					res.status(404).send({
+						message: 'Что-то пошло не так'
+					});
 				}
 			}
 		} catch (error) {
@@ -180,13 +120,21 @@ console.log(req.params)
 				if (post) {
 					if (String(currentPost._id) === String(postId)) {
 						currentPost.content = req.body.content;
+						currentPost.likesCount = req.body.likesCount
 						currentPost.save();
-						res.send();
+						res.status(200).send({
+							message: 'success',
+							updatedPost: currentPost
+						});
 					} else {
-						res.status(403).send();
+						res.status(403).send({
+							message: 'Пост с таким id не найдет'
+						});
 					}
 				} else {
-					res.status(404).send();
+					res.status(404).send({
+						message: 'Что-то пошло не так'
+					});
 				}
 			}
 		} catch (error) {
