@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 
 export const Users: React.FC = observer(() => {
   React.useEffect(() => {
-  users.getUsers()
+
   }, [auth.isAuth])
 
   if  (!auth.isAuth) {

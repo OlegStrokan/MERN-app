@@ -8,5 +8,5 @@ export interface PostDto {
 
 export interface PostResponse {
   message: string,
-  posts: PostDto[]
+  data: PostDto[]
 }

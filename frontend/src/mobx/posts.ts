@@ -18,8 +18,8 @@ class Posts  {
   }
 
   async getPosts() {
-    const { posts } = await postsAPI.getPosts()
-    this.setPosts(posts)
+    const { data } = await postsAPI.getPosts()
+    this.setPosts(data)
 
   }
   async createPosts(content: string, user: UserDto) {
@@ -34,3 +34,5 @@ class Posts  {
    await postsAPI.deletePost()
   }
 }
+
+export const posts = new Posts()

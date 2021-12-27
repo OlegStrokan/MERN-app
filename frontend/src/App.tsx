@@ -1,46 +1,40 @@
 import React from 'react';
 import { Login } from './pages/Login/Login';
 import { Profile } from './pages/Profile/Profile';
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Posts } from './pages/Posts/Posts';
 import { Header } from './components/Header/Header';
-import { Typography } from '@mui/material';
 import { Users } from './pages/Users/Users';
 import { auth } from './mobx/auth';
+import { users } from './mobx/users';
+import { posts } from './mobx/posts';
+import styles from './App.module.css';
+import { Navbar } from './components/Navbar/Navbar';
 
 export const App = () => {
 
-React.useEffect(() => {
-  if (localStorage.getItem('token')) {
-    auth.me()
-  }
-},[])
+  const [openMenu, setOpenMenu] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('token')) {
+      auth.me()
+      users.getUsers()
+      posts.getPosts()
+    }
+  }, [])
   return (
-    <div>
-      <Header/>
-      <nav className="Nav">
-        <ul>
-          <li>
-            <Link to="/login"><Typography>Login</Typography></Link>
-          </li>
-          <li>
-            <Link to="/profile"><Typography>Profile</Typography></Link>
-          </li>
-          <li>
-            <Link to="/users"><Typography>Users</Typography></Link>
-          </li>
-          <li>
-            <Link to="/posts"><Typography>Posts</Typography></Link>
-          </li>
-        </ul>
-      </nav>
-    <Routes>
-      <Route path='/' element={ <Navigate to={'/login'}/>}/>
-      <Route  path="/login" element={<Login />}/>
-      <Route  path="/profile" element={<Profile />}/>
-      <Route  path="/users" element={<Users />}/>
-      <Route  path="/posts" element={<Posts />}/>
-    </Routes>
+    <div className={openMenu ? styles.rootOpen : styles.rootClose}>
+      <div className={styles.header}><Header openMenu={openMenu} setOpenMenu={setOpenMenu}/></div>
+      <div className={styles.navbar}>{openMenu && <Navbar/>}</div>
+      <div className={styles.content}>
+      <Routes>
+        <Route path="/" element={<Navigate to={'/login'}/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/users" element={<Users/>}/>
+        <Route path="/posts" element={<Posts/>}/>
+      </Routes>
+      </div>
     </div>
   );
 };

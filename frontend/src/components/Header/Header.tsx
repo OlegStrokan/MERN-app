@@ -1,19 +1,41 @@
 import React from 'react';
-import { Button, Card } from '@mui/material';
+import { AppBar, Box, Button, Card, IconButton, Toolbar, Typography } from '@mui/material';
 import { auth } from '../../mobx/auth';
 import { useNavigate } from "react-router-dom";
-import styles from './Header.module.css';
+import MenuIcon from '@mui/icons-material/Menu';
 
-export const Header = () => {
+interface IHeader {
+  openMenu: boolean;
+  setOpenMenu: (state: boolean) => void;
+}
+
+export const Header: React.FC<IHeader> = ({openMenu, setOpenMenu}) => {
 
   const navigate = useNavigate()
 
   return (
-    <Card className={styles.root}>
-      {!auth.isAuth
-        ?  <Button variant="contained" onClick={() => navigate('/login')}>Login</Button>
-        : <Button variant="contained" onClick={() => auth.logout()}>Logout</Button>
-      }
-    </Card>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setOpenMenu(!openMenu)}
+            >
+              <MenuIcon/>
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              News
+            </Typography>
+            {!auth.isAuth
+              ?  <Button variant="contained" color="secondary" onClick={() => navigate('/login')}>Login</Button>
+              : <Button variant="contained" color="secondary" onClick={() => auth.logout()}>Logout</Button>
+            }
+          </Toolbar>
+        </AppBar>
+      </Box>
   );
 };
