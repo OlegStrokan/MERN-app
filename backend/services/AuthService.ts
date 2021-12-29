@@ -32,7 +32,7 @@ class AuthService {
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
     // сохраняем refreshToken в базу данных
-    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    await tokenService.saveToken(userDto._id, tokens.refreshToken)
 
     return { ...tokens, user: userDto }
 
@@ -58,7 +58,7 @@ class AuthService {
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
-    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    await tokenService.saveToken(userDto._id, tokens.refreshToken)
 
     return { ...tokens, user: userDto }
   }
@@ -79,10 +79,10 @@ class AuthService {
     }
 
     // @ts-ignore
-    const user = await UserModel.findById(userData.id)
+    const user = await UserModel.findById(userData._id)
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto })
-    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    await tokenService.saveToken(userDto._id, tokens.refreshToken)
     return {...tokens, user: userDto}
 
 

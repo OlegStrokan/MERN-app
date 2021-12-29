@@ -18,7 +18,8 @@ export const Users: React.FC = observer(() => {
     <Card>
       {users.users.length !== 0 && users.users.map((user) => {
        return <Card sx={{ p: 2, m: 2}}>
-        <Typography>{user.username}</Typography>
+        <Typography>Username: {user.username}</Typography>
+        <Typography>Full name: {user.fullname}</Typography>
         </Card>
       })}
     </Card>

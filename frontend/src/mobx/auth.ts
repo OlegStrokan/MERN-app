@@ -9,7 +9,7 @@ import { BASE_URL } from '../api/instance';
 class Auth {
   isAuth = false;
   user = {
-    id: null,
+    _id: null,
     username: null,
     password: null,
     email: null,

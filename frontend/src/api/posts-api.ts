@@ -9,10 +9,10 @@ export const postsAPI = {
   createPost(content: string, user: UserDto): Promise<PostResponse> {
     return instance.post<PostResponse>('posts', { content, user }).then((response) => response.data)
   },
-  updatePost(content: string): Promise<PostResponse> {
-    return instance.patch<PostResponse>('posts').then((response) => response.data)
+  updatePost(post: PostDto): Promise<PostResponse> {
+    return instance.patch<PostResponse>('posts', post).then((response) => response.data)
   },
   deletePost(postId: string): Promise<PostResponse> {
-    return instance.delete<PostResponse>(`posts/${postId}`).then((response) => response.data)
+    return instance.delete<PostResponse>(`posts`).then((response) => response.data)
   }
 }

@@ -14,7 +14,6 @@ import { Navbar } from './components/Navbar/Navbar';
 export const App = () => {
 
   const [openMenu, setOpenMenu] = React.useState<boolean>(false);
-
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       auth.me()
@@ -22,6 +21,7 @@ export const App = () => {
       posts.getPosts()
 }
   }, [])
+
   return (
     <div className={openMenu ? styles.rootOpen : styles.rootClose}>
       <div className={styles.header}><Header openMenu={openMenu} setOpenMenu={setOpenMenu}/></div>

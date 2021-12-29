@@ -10,10 +10,15 @@ import { Button } from '@mui/material';
 import { validationSchema } from '../../utils/validators/post';
 import { observer } from 'mobx-react-lite';
 import { posts } from '../../mobx/posts';
+import { PostDto } from '../../types/post.dto';
 
-export const EditPost: React.FC = observer(({  }) => {
+interface PostInterface {
+  post: PostDto;
+}
+
+export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
   const onSubmit = (event: any) => {
-    posts.updatePost(event.content)
+    posts.updatePost({_id: post._id, content: event.content, likesCount: post.likesCount, userId: post.userId})
   };
   const {
     register, control, handleSubmit, formState: { errors },
@@ -54,7 +59,7 @@ export const EditPost: React.FC = observer(({  }) => {
               variant="contained"
               sx={{ mt: 1, mb: 2, p: 2 }}
             >
-              Add post
+              Update
             </Button>
           </Grid>
         </Grid>

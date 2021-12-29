@@ -12,7 +12,7 @@ import { posts } from '../../mobx/posts';
 import { validationSchema } from '../../utils/validators/post';
 import { observer } from 'mobx-react-lite';
 
-export const AddPost: React.FC = observer(({  }) => {
+export const AddPost: React.FC = observer(() => {
   const onSubmit = (event: any) => {
     posts.createPosts(event.content, auth.user)
   };
@@ -32,6 +32,7 @@ export const AddPost: React.FC = observer(({  }) => {
         alignItems: 'center',
       }}
     >
+      <Typography variant="h5">Add new post</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.inputs} noValidate sx={{ mt: 3 }}>
         <Grid container spacing={2} className={styles.inputs}>
           <Grid item xs={12}>

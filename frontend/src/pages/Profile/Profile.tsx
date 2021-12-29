@@ -29,7 +29,7 @@ export const Profile: React.FC = observer(() => {
   }
 
   const onSubmit = (event: any) => {
-   auth.updateProfile(auth.user.id as string, event.email, event.username, event.fullname).then(() => setEditMode(false))
+   auth.updateProfile(auth.user._id as string, event.email, event.username, event.fullname).then(() => setEditMode(false))
   }
 
   return (

@@ -1,11 +1,10 @@
 import { model, Schema, Document } from 'mongoose';
-import { UserModelInterface } from './UserModel';
 
 export interface PostModelInterface {
 	_id?: string
 	content: string;
 	likesCount: number;
-	user: UserModelInterface
+	userId: string
 }
 
 type PostModelDocumentInterface = PostModelInterface & Document;
@@ -19,7 +18,7 @@ const PostSchema = new Schema<PostModelInterface>({
 		required: false,
 		type: Number,
 	},
-	user: {
+	userId: {
 		required: true,
 		ref: 'User',
 		type: Schema.Types.ObjectId,

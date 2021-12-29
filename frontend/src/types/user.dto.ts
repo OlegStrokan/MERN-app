@@ -2,7 +2,7 @@ import { PostDto } from './post.dto';
 
 
 export interface UserDto {
-  id: string;
+  _id: string;
   email: string;
   fullname: string;
   username: string;
