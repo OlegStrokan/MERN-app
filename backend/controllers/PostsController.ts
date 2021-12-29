@@ -109,7 +109,7 @@ class PostController {
 			return;
 		}
 			if (post) {
-				const postId = req.params.id;
+				const postId = post._id;
 
 				if (!isValidObjectId(postId)) {
 					res.status(400).send();

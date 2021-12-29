@@ -20,7 +20,7 @@ export const App = () => {
       auth.me()
       users.getUsers()
       posts.getPosts()
-    }
+}
   }, [])
   return (
     <div className={openMenu ? styles.rootOpen : styles.rootClose}>

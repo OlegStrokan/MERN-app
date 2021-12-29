@@ -43,7 +43,7 @@ app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 // user's post functional
 app.get('/posts', PostCtrl.index);
 app.post('/posts', PostCtrl.create);
-app.patch('/posts/:id', postValidation, PostCtrl.update);
+app.patch('/posts/', postValidation, PostCtrl.update);
 app.delete('/posts/:id' , PostCtrl.delete);
 
 

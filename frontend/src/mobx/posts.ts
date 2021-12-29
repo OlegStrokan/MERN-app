@@ -26,12 +26,12 @@ class Posts  {
      await postsAPI.createPost(content, user)
   }
 
-  async updatePost(post: PostDto) {
-     await postsAPI.updatePost(post)
+  async updatePost(content: string) {
+     await postsAPI.updatePost(content)
   }
 
-  async deletePost() {
-   await postsAPI.deletePost()
+  async deletePost(postId: string) {
+   await postsAPI.deletePost(postId)
   }
 }
 
