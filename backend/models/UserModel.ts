@@ -10,7 +10,7 @@ export interface UserModelInterface {
 	role: string;
 	isActivated: boolean;
 	activationLink: string;
-	posts?: PostModelInterface[];
+	posts?: string[];
 }
 
 export type UserModelDocumentInterface = UserModelInterface & Document;

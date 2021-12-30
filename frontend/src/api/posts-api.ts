@@ -13,6 +13,6 @@ export const postsAPI = {
     return instance.patch<PostResponse>('posts', post).then((response) => response.data)
   },
   deletePost(postId: string): Promise<PostResponse> {
-    return instance.delete<PostResponse>(`posts`).then((response) => response.data)
+    return instance.delete<PostResponse>(`posts/${postId}`, ).then((response) => response.data)
   }
 }
