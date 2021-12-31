@@ -7,7 +7,7 @@ class Posts  {
   posts: PostDto[] = []
   isLoading = false
   error: any = null
-
+  currentPost: PostDto | null = null
 
   constructor() {
     makeAutoObservable(this)
@@ -17,9 +17,19 @@ class Posts  {
     this.posts = posts
   }
 
+  setCurrentPost(post: PostDto) {
+    this.currentPost = post
+  }
+
   async getPosts() {
     const { data } = await postsAPI.getPosts()
     this.setPosts(data)
+
+  }
+
+  async showPost(id: string) {
+    const { data } = await postsAPI.showPost(id)
+    this.setCurrentPost(data)
 
   }
   async createPosts(content: string, user: UserDto) {

@@ -18,7 +18,7 @@ interface PostInterface {
 
 export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
   const onSubmit = (event: any) => {
-    posts.updatePost({_id: post._id, content: event.content, likesCount: post.likesCount, userId: post.userId})
+    posts.updatePost({_id: post._id, title: event.title,content: event.content, likesCount: post.likesCount, user: post.user})
   };
   const {
     register, control, handleSubmit, formState: { errors },
@@ -38,6 +38,20 @@ export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
     >
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.inputs} noValidate sx={{ mt: 3 }}>
         <Grid container spacing={2} className={styles.inputs}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="title"
+              label="Title"
+              autoComplete="Title"
+              {...register('title')}
+              error={!!errors.title}
+            />
+            <Typography variant="subtitle2" color="error">
+              {errors.title?.message}
+            </Typography>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               required

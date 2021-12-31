@@ -20,6 +20,33 @@ class PostController {
     }
   }
 
+  async show(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const postId = req.params.id;
+
+      if (!isValidObjectId(postId)) {
+        res.status(400).send();
+        return;
+      }
+
+      const post = await PostModel.findById(postId);
+
+      if (!post) {
+        res.status(404).send();
+        return;
+      }
+
+      res.json({
+        data: post,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error,
+      });
+    }
+
+  }
 
   async create(req: express.Request, res: express.Response): Promise<void> {
     try {
@@ -33,6 +60,7 @@ class PostController {
         }
       }
       const data: any = {
+        title: req.body.title,
         content: req.body.content,
         likesCount: 0,
         user: user._id,
@@ -57,6 +85,54 @@ class PostController {
     }
   }
 
+  async update(req: express.Request, res: express.Response): Promise<void> {
+    const post = req.body as PostModelInterface;
+    console.log(post)
+    try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        res.status(400).json({ status: 'error', errors: errors.array() });
+        return;
+      }
+      if (post) {
+        const postId = post._id;
+
+        if (!isValidObjectId(postId)) {
+          res.status(400).send();
+          return;
+        }
+
+        const currentPost = await PostModel.findById(postId);
+
+        if (post) {
+          if (String(currentPost._id) === String(postId)) {
+            currentPost.title = post.title
+            currentPost.content = post.content;
+            currentPost.likesCount = post.likesCount
+            currentPost.save();
+            const posts = await PostModel.find();
+            res.status(200).send({
+              message: 'success',
+              posts: posts
+            });
+          } else {
+            res.status(403).send({
+              message: 'Пост с таким id не найдет'
+            });
+          }
+        } else {
+          res.status(404).send({
+            message: 'Что-то пошло не так'
+          });
+        }
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error,
+      });
+    }
+  }
 
   async delete(req: express.Request, res: express.Response): Promise<void> {
 
@@ -95,54 +171,6 @@ class PostController {
       });
     }
 
-  }
-
-  async update(req: express.Request, res: express.Response): Promise<void> {
-    const post = req.body as PostModelInterface;
-    console.log(post)
-    try {
-      const errors = validationResult(req)
-      if (!errors.isEmpty()) {
-        res.status(400).json({ status: 'error', errors: errors.array() });
-        return;
-      }
-      if (post) {
-        const postId = post._id;
-
-        if (!isValidObjectId(postId)) {
-          res.status(400).send();
-          return;
-        }
-
-        const currentPost = await PostModel.findById(postId);
-
-        if (post) {
-          if (String(currentPost._id) === String(postId)) {
-            currentPost.content = req.body.content;
-            currentPost.likesCount = req.body.likesCount
-            currentPost.save();
-            const posts = await PostModel.find();
-            res.status(200).send({
-              message: 'success',
-              posts: posts
-            });
-          } else {
-            res.status(403).send({
-              message: 'Пост с таким id не найдет'
-            });
-          }
-        } else {
-          res.status(404).send({
-            message: 'Что-то пошло не так'
-          });
-        }
-      }
-    } catch (error) {
-      res.status(500).json({
-        status: 'error',
-        message: error,
-      });
-    }
   }
 
 

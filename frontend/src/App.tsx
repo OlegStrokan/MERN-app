@@ -10,6 +10,7 @@ import { users } from './mobx/users';
 import { posts } from './mobx/posts';
 import styles from './App.module.css';
 import { Navbar } from './components/Navbar/Navbar';
+import { PostPage } from './pages/Posts/PostPage';
 
 export const App = () => {
 
@@ -33,6 +34,7 @@ export const App = () => {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/users" element={<Users/>}/>
         <Route path="/posts" element={<Posts/>}/>
+        <Route path="/posts/:id" element={<PostPage />}/>
       </Routes>
       </div>
     </div>

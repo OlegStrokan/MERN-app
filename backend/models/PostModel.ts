@@ -4,6 +4,7 @@ import { UserModelInterface } from './UserModel';
 export interface PostModelInterface {
 	_id?: string
 	content: string;
+	title: string;
 	likesCount: number;
 	user: UserModelInterface
 }
@@ -11,6 +12,10 @@ export interface PostModelInterface {
 type PostModelDocumentInterface = PostModelInterface & Document;
 
 const PostSchema = new Schema<PostModelInterface>({
+	title: {
+		required: true,
+		type: String,
+	},
 	content: {
 		required: true,
 		type: String,

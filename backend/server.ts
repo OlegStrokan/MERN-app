@@ -37,14 +37,15 @@ app.get('/auth/activate/:link', AuthCtrl.activate);
 app.get('/auth/me', AuthCtrl.refresh);
 
 // users functional
-app.get('/users', UserCtrl.getUsers);
+app.get('/users', authMiddleware, UserCtrl.getUsers);
 app.post('/profile', authMiddleware, UserCtrl.updateProfile)
 
 // user's post functional
 app.get('/posts', PostCtrl.index);
-app.post('/posts', PostCtrl.create);
+app.get('/posts/:id', PostCtrl.show);
+app.post('/posts', authMiddleware, PostCtrl.create);
 app.patch('/posts/:id', postValidation, PostCtrl.update);
-app.delete('/posts/:id' , PostCtrl.delete);
+app.delete('/posts/:id', authMiddleware, PostCtrl.delete);
 
 
 app.listen(8000, () => {
