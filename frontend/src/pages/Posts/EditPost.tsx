@@ -14,9 +14,11 @@ import { PostDto } from '../../types/post.dto';
 
 interface PostInterface {
   post: PostDto;
+  editMode: boolean;
+  setEditMode: (state: boolean) => void;
 }
 
-export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
+export const EditPost: React.FC<PostInterface> = observer(({ post, editMode, setEditMode }) => {
   const onSubmit = (event: any) => {
     postsState.updatePost({_id: post._id, title: event.title,content: event.content, likesCount: post.likesCount, user: post.user})
   };
@@ -37,6 +39,7 @@ export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
       }}
     >
       <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.inputs} noValidate sx={{ mt: 3 }}>
+        <Button variant="contained" onClick={() => setEditMode(!editMode)} sx={{ m: 1}}>Back</Button>
         <Grid container spacing={2} className={styles.inputs}>
           <Grid item xs={12}>
             <TextField

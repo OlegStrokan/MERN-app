@@ -32,8 +32,8 @@ class Posts  {
     this.setCurrentPost(data)
 
   }
-  async createPosts(content: string, user: UserDto) {
-     await postsAPI.createPost(content, user)
+  async createPosts(content: string, title: string, user: UserDto) {
+     await postsAPI.createPost(content, title, user)
   }
 
   async updatePost(post: PostDto) {

@@ -28,7 +28,7 @@ export const Header: React.FC<IHeader> = ({openMenu, setOpenMenu}) => {
               <MenuIcon/>
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              Mern app
             </Typography>
             {!auth.isAuth
               ?  <Button variant="contained" color="secondary" onClick={() => navigate('/login')}>Login</Button>

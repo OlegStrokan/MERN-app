@@ -6,8 +6,6 @@ import { Posts } from './pages/Posts/Posts';
 import { Header } from './components/Header/Header';
 import { Users } from './pages/Users/Users';
 import { auth } from './mobx/auth';
-import { users } from './mobx/users';
-import { posts } from './mobx/posts';
 import styles from './App.module.css';
 import { Navbar } from './components/Navbar/Navbar';
 import { PostPage } from './pages/Posts/PostPage';

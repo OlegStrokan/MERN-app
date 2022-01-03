@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button, Card, Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 import { PostDto } from '../../types/post.dto';
-import { EditPost } from './EditPost';
-import { postsState } from '../../mobx/posts';
 import { Link } from 'react-router-dom';
 
 interface PostInterface {
@@ -11,10 +9,9 @@ interface PostInterface {
 
 export const Post: React.FC<PostInterface> = ({ post}) => {
 
-  const [editMode, setEditMode] = React.useState<boolean>(false);
   return (
     <Card sx={{ p: 2, m: 2}}>
-      {!editMode ? <>
+      {
         <Link to={{
           pathname: "/posts/" + post._id,
         }}>
@@ -23,12 +20,6 @@ export const Post: React.FC<PostInterface> = ({ post}) => {
         <Typography>Likes: {post.likesCount}</Typography>
       </div>
         </Link>
-        <div>
-        <Button variant="contained" onClick={() => setEditMode(!editMode)} sx={{ m: 1}}>Update</Button>
-        <Button variant="contained" onClick={() => postsState.deletePost(post._id as string)} sx={{ m: 1}}>Delete</Button>
-        </div>
-        </>
-        : <EditPost post={post}/>
       }
     </Card>
   );

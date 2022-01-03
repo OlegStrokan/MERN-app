@@ -9,8 +9,8 @@ export const postsAPI = {
   showPost(id: string): Promise<{data: PostDto}> {
     return instance.get<{ data: PostDto }>(`posts/${id}`, {}).then((response) => response.data)
   },
-  createPost(content: string, user: UserDto): Promise<PostResponse> {
-    return instance.post<PostResponse>('posts', { content, user }).then((response) => response.data)
+  createPost(content: string, title: string , user: UserDto): Promise<PostResponse> {
+    return instance.post<PostResponse>('posts', { content, title, user }).then((response) => response.data)
   },
   updatePost(post: PostDto): Promise<PostResponse> {
     return instance.patch<PostResponse>(`posts/${post._id}`, post).then((response) => response.data)
