@@ -87,7 +87,6 @@ class PostController {
 
   async update(req: express.Request, res: express.Response): Promise<void> {
     const post = req.body as PostModelInterface;
-    console.log(post)
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
