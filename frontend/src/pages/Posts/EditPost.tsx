@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { validationSchema } from '../../utils/validators/post';
 import { observer } from 'mobx-react-lite';
-import { posts } from '../../mobx/posts';
+import { postsState } from '../../mobx/posts';
 import { PostDto } from '../../types/post.dto';
 
 interface PostInterface {
@@ -18,7 +18,7 @@ interface PostInterface {
 
 export const EditPost: React.FC<PostInterface> = observer(({ post }) => {
   const onSubmit = (event: any) => {
-    posts.updatePost({_id: post._id, title: event.title,content: event.content, likesCount: post.likesCount, user: post.user})
+    postsState.updatePost({_id: post._id, title: event.title,content: event.content, likesCount: post.likesCount, user: post.user})
   };
   const {
     register, control, handleSubmit, formState: { errors },

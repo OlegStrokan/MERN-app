@@ -45,4 +45,4 @@ class Posts  {
   }
 }
 
-export const posts = new Posts()
+export const postsState = new Posts()

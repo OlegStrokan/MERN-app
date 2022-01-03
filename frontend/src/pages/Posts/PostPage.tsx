@@ -1,10 +1,8 @@
 import React from 'react';
-import {  Card, IconButton, Typography } from '@mui/material';
-import { posts } from '../../mobx/posts';
+import {  Card, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { PostDto } from '../../types/post.dto';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { auth } from '../../mobx/auth';
+
 
 export const PostPage: React.FC = () => {
 debugger;

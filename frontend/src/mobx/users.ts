@@ -19,4 +19,4 @@ class Users {
 }
 }
 
-export const users = new Users()
+export const usersState = new Users()

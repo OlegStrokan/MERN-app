@@ -8,13 +8,13 @@ import styles from '../Login/Login.module.css';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { posts } from '../../mobx/posts';
+import { postsState } from '../../mobx/posts';
 import { validationSchema } from '../../utils/validators/post';
 import { observer } from 'mobx-react-lite';
 
 export const AddPost: React.FC = observer(() => {
   const onSubmit = (event: any) => {
-    posts.createPosts(event.content, auth.user)
+    postsState.createPosts(event.content, auth.user)
   };
   const {
     register, control, handleSubmit, formState: { errors },

@@ -18,8 +18,6 @@ export const App = () => {
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       auth.me()
-      users.getUsers()
-      posts.getPosts()
 }
   }, [])
 

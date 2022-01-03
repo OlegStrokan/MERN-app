@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Typography } from '@mui/material';
 import { PostDto } from '../../types/post.dto';
 import { EditPost } from './EditPost';
-import { posts } from '../../mobx/posts';
+import { postsState } from '../../mobx/posts';
 import { Link } from 'react-router-dom';
 
 interface PostInterface {
@@ -25,7 +25,7 @@ export const Post: React.FC<PostInterface> = ({ post}) => {
         </Link>
         <div>
         <Button variant="contained" onClick={() => setEditMode(!editMode)} sx={{ m: 1}}>Update</Button>
-        <Button variant="contained" onClick={() => posts.deletePost(post._id as string)} sx={{ m: 1}}>Delete</Button>
+        <Button variant="contained" onClick={() => postsState.deletePost(post._id as string)} sx={{ m: 1}}>Delete</Button>
         </div>
         </>
         : <EditPost post={post}/>
