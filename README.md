@@ -15,7 +15,7 @@ Auth functional:
 
 Users functional:
 - GET */users - get all users*
-- POST */profile - update your own profile*
+- PATCH */profile - update your own profile*
 
 Posts functional
 - GET */posts - get all posts*
